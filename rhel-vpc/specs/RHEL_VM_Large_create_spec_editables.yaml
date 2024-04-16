@@ -1,0 +1,5 @@
+name: true
+resources:
+  memory_size_mib: true
+  num_sockets: true
+  num_vcpus_per_socket: true

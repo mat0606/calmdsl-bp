@@ -1,0 +1,1 @@
+Remove-ADUser "@@{mailNickName}@@" -Confirm:$False

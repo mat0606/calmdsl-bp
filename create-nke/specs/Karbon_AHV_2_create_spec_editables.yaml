@@ -1,0 +1,6 @@
+resources:
+  nic_list:
+    '0':
+      subnet_reference: true
+      vpc_reference: true
+  serial_port_list: {}
