@@ -1,0 +1,1 @@
+netsh advfirewall firewall add rule name="Open UDP Port 123 for NTP" dir=in action=allow protocol=UDP localport=123

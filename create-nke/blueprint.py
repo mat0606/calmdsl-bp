@@ -8,7 +8,7 @@ import json  # no_qa
 import os  # no_qa
 
 from calm.dsl.builtins import *  # no_qa
-
+from calm.dsl.runbooks import CalmEndpoint as Endpoint
 
 # Secret Variables
 
@@ -148,7 +148,7 @@ class Karbon(Service):
     private_key = CalmVariable.Simple.multiline(
         "",
         label="",
-        regex="^(.|\n)*$",
+        regex="^(.|\\n)*$",
         validate_regex=False,
         is_mandatory=False,
         is_hidden=False,
@@ -422,8 +422,12 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     memory = 2
     vCPUs = 2
     cores_per_vCPU = 1
-    disks = [AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(AHV_78, bootable=True)]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_178", cluster="PHX-POC178")]
+    disks = [
+        AhvVmDisk.Disk.Scsi.cloneFromImageService(
+            "centos7-calm-template.qcow2", bootable=True
+        )
+    ]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -431,17 +435,19 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
         )
     )
 
+    power_state = "ON"
+
 
 class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC178")
+    cluster = Ref.Cluster(name="PHX-POC070")
 
 
 class Karbon_AHV(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_178")
+    account = Ref.Account("NTNX_LOCAL_AZ_70")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -464,8 +470,12 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     memory = 2
     vCPUs = 2
     cores_per_vCPU = 1
-    disks = [AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(AHV_78, bootable=True)]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_178", cluster="PHX-POC178")]
+    disks = [
+        AhvVmDisk.Disk.Scsi.cloneFromImageService(
+            "centos7-calm-template.qcow2", bootable=True
+        )
+    ]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -473,17 +483,19 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
         )
     )
 
+    power_state = "ON"
+
 
 class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC178")
+    cluster = Ref.Cluster(name="PHX-POC070")
 
 
 class Karbon_AHV_2(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_178")
+    account = Ref.Account("NTNX_LOCAL_AZ_70")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -506,8 +518,12 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     memory = 2
     vCPUs = 2
     cores_per_vCPU = 1
-    disks = [AhvVmDisk.Disk.Scsi.cloneFromVMDiskPackage(AHV_78, bootable=True)]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_178", cluster="PHX-POC178")]
+    disks = [
+        AhvVmDisk.Disk.Scsi.cloneFromImageService(
+            "centos7-calm-template.qcow2", bootable=True
+        )
+    ]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -515,17 +531,19 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
         )
     )
 
+    power_state = "ON"
+
 
 class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC178")
+    cluster = Ref.Cluster(name="PHX-POC070")
 
 
 class Karbon_AHV_2_3(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_178")
+    account = Ref.Account("NTNX_LOCAL_AZ_70")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -622,7 +640,7 @@ class SingleMaster(Profile):
     deployments = [_75513331_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.38.178.39",
+        "10.42.70.39",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -631,7 +649,7 @@ class SingleMaster(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.38.178.40",
+        "10.42.70.50",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -669,7 +687,7 @@ class SingleMaster(Profile):
     worker_node_cpu = CalmVariable.Simple.int(
         "4",
         label="Please key in the Worker Node CPU",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -680,7 +698,7 @@ class SingleMaster(Profile):
     worker_node_memory = CalmVariable.Simple.int(
         "8",
         label="Worker Node Memory (Gb)",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -691,7 +709,7 @@ class SingleMaster(Profile):
     worker_node_disk_size = CalmVariable.Simple.int(
         "120",
         label="Worker Node Disk Size (Gb)",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -700,7 +718,7 @@ class SingleMaster(Profile):
     )
 
     External_LB = CalmVariable.Simple(
-        "10.38.178.103",
+        "10.42.70.103",
         label="Please key in the external Load Balancer",
         is_mandatory=False,
         is_hidden=True,
@@ -729,7 +747,7 @@ class SingleMaster(Profile):
     No_Worker_Node = CalmVariable.Simple.int(
         "1",
         label="Number of Worker Node",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -854,9 +872,9 @@ class SingleMaster(Profile):
     )
 
     K8S_Version = CalmVariable.WithOptions.Predefined.Array(
-        ["1.23.16-0", "1.24.10-0", "1.25.6-1", "1.26.8-0"],
+        ["1.2.16-05", "1.26.11-0", "1.27.8-0", "1.28.5-0"],
         label="Please select the Kubernetes version",
-        defaults=["1.26.8-0"],
+        defaults=["1.28.5-0"],
         regex="^.*$",
         validate_regex=False,
         is_mandatory=True,
@@ -894,7 +912,7 @@ class SingleMaster(Profile):
         add_worker_node_count = CalmVariable.Simple.int(
             "1",
             label="Please key in the no of worker nodes to add",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -922,7 +940,7 @@ class SingleMaster(Profile):
         remove_worker_node_count = CalmVariable.Simple.int(
             "1",
             label="Please key in the no of worker nodes to remove",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -958,7 +976,7 @@ class SingleMaster(Profile):
         node_disk_mib = CalmVariable.Simple.int(
             "122880",
             label="Please key in the hard disk per node",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -968,7 +986,7 @@ class SingleMaster(Profile):
         node_memory_mib = CalmVariable.Simple.int(
             "8192",
             label="Please key in the node memory in Mib",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -978,7 +996,7 @@ class SingleMaster(Profile):
         node_cpu = CalmVariable.Simple.int(
             "8",
             label="Please key in the number of vCPU for the node pool",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -988,7 +1006,7 @@ class SingleMaster(Profile):
         num_nodes = CalmVariable.Simple.int(
             "1",
             label="Please key in the number of nodes in the Node Pool",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1036,7 +1054,7 @@ class ActivePassiveMaster(Profile):
     deployments = [ec3c7adf_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.38.178.39",
+        "10.42.70.39",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -1045,7 +1063,7 @@ class ActivePassiveMaster(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.38.178.40",
+        "10.42.70.50",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -1074,7 +1092,7 @@ class ActivePassiveMaster(Profile):
     worker_node_cpu = CalmVariable.Simple.int(
         "4",
         label="Please key in the Worker Node CPU",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -1085,7 +1103,7 @@ class ActivePassiveMaster(Profile):
     worker_node_memory = CalmVariable.Simple.int(
         "8",
         label="Worker Node Memory (Gb)",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -1096,7 +1114,7 @@ class ActivePassiveMaster(Profile):
     worker_node_disk_size = CalmVariable.Simple.int(
         "120",
         label="Worker Node Disk Size (Gb)",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=False,
         is_hidden=False,
@@ -1109,7 +1127,7 @@ class ActivePassiveMaster(Profile):
     )
 
     Master_VIP2 = CalmVariable.Simple(
-        "10.38.178.102",
+        "10.42.70.102",
         label="Master VIP2",
         is_mandatory=False,
         is_hidden=True,
@@ -1118,7 +1136,7 @@ class ActivePassiveMaster(Profile):
     )
 
     Master_VIP = CalmVariable.Simple(
-        "10.38.178.101",
+        "10.42.70.101",
         label="Master VIP",
         is_mandatory=True,
         is_hidden=False,
@@ -1129,7 +1147,7 @@ class ActivePassiveMaster(Profile):
     No_Worker_Node = CalmVariable.Simple.int(
         "1",
         label="Please key in the no of worker node",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -1251,9 +1269,9 @@ class ActivePassiveMaster(Profile):
     )
 
     K8S_Version = CalmVariable.WithOptions.Predefined.Array(
-        ["1.23.16-0", "1.24.10-0", "1.25.6-1", "1.26.8-0"],
+        ["1.25.16-0", "1.26.11-0", "1.27.8-0", "1.28.5-0"],
         label="Please select the Kubernetes version",
-        defaults=["1.26.8-0"],
+        defaults=["1.28.5-0"],
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
@@ -1289,7 +1307,7 @@ class ActivePassiveMaster(Profile):
         add_worker_node_count = CalmVariable.Simple.int(
             "1",
             label="Please key in the no of worker nodes to add",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1317,7 +1335,7 @@ class ActivePassiveMaster(Profile):
         remove_worker_node_count = CalmVariable.Simple.int(
             "1",
             label="Please key in the no of worker nodes to remove",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1353,7 +1371,7 @@ class ActivePassiveMaster(Profile):
         node_disk_mib = CalmVariable.Simple.int(
             "122880",
             label="Please key in the hard disk per node",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1363,7 +1381,7 @@ class ActivePassiveMaster(Profile):
         node_memory_mib = CalmVariable.Simple.int(
             "8192",
             label="Please key in the node memory in Mib",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1373,7 +1391,7 @@ class ActivePassiveMaster(Profile):
         node_cpu = CalmVariable.Simple.int(
             "8",
             label="Please key in the number of vCPU for the node pool",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1383,7 +1401,7 @@ class ActivePassiveMaster(Profile):
         num_nodes = CalmVariable.Simple.int(
             "1",
             label="Please key in the number of nodes in the Node Pool",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1431,7 +1449,7 @@ class ActiveActiveMaster(Profile):
     deployments = [b45aa011_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.38.178.39",
+        "10.42.70.39",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -1440,7 +1458,7 @@ class ActiveActiveMaster(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.38.178.40",
+        "10.42.70.50",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -1469,7 +1487,7 @@ class ActiveActiveMaster(Profile):
     worker_node_cpu = CalmVariable.Simple.int(
         "4",
         label="Please key in the Worker Node CPU",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -1480,7 +1498,7 @@ class ActiveActiveMaster(Profile):
     worker_node_memory = CalmVariable.Simple.int(
         "8",
         label="Worker Node Memory (Gb)",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -1491,7 +1509,7 @@ class ActiveActiveMaster(Profile):
     worker_node_disk_size = CalmVariable.Simple.int(
         "120",
         label="Worker Node Disk Size (Gb)",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=False,
         is_hidden=True,
@@ -1500,7 +1518,7 @@ class ActiveActiveMaster(Profile):
     )
 
     External_LB = CalmVariable.Simple(
-        "10.38.178.103",
+        "10.42.70.103",
         label="Please key in the external Load Balancer",
         is_mandatory=True,
         is_hidden=False,
@@ -1509,7 +1527,7 @@ class ActiveActiveMaster(Profile):
     )
 
     Master_VIP2 = CalmVariable.Simple(
-        "10.38.78.102",
+        "10.42.70.102",
         label="Master VIP2",
         is_mandatory=True,
         is_hidden=False,
@@ -1518,7 +1536,7 @@ class ActiveActiveMaster(Profile):
     )
 
     Master_VIP = CalmVariable.Simple(
-        "10.38.178.101",
+        "10.42.70.101",
         label="Master VIP",
         is_mandatory=True,
         is_hidden=False,
@@ -1529,7 +1547,7 @@ class ActiveActiveMaster(Profile):
     No_Worker_Node = CalmVariable.Simple.int(
         "1",
         label="Please key in the no of worker node",
-        regex="^[\d]*$",
+        regex="^[\\d]*$",
         validate_regex=False,
         is_mandatory=True,
         is_hidden=False,
@@ -1651,9 +1669,9 @@ class ActiveActiveMaster(Profile):
     )
 
     K8S_Version = CalmVariable.WithOptions.Predefined.Array(
-        ["1.23.16-0", "1.24.10-0", "1.25.6-1", "1.26.8-0"],
+        ["1.25.16-0", "1.26.11-0", "1.27.8-0", "1.28.5-0"],
         label="Please select the Kubernetes version",
-        defaults=["1.26.8-0"],
+        defaults=["1.28.5-0"],
         regex="^.*$",
         validate_regex=False,
         is_mandatory=True,
@@ -1691,7 +1709,7 @@ class ActiveActiveMaster(Profile):
         add_worker_node_count = CalmVariable.Simple.int(
             "1",
             label="Please key in the no of worker nodes to add",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1719,7 +1737,7 @@ class ActiveActiveMaster(Profile):
         remove_worker_node_count = CalmVariable.Simple.int(
             "1",
             label="Please key in the no of worker nodes to remove",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1755,7 +1773,7 @@ class ActiveActiveMaster(Profile):
         node_disk_mib = CalmVariable.Simple.int(
             "122880",
             label="Please key in the node memory in Mib",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1765,7 +1783,7 @@ class ActiveActiveMaster(Profile):
         node_memory_mib = CalmVariable.Simple.int(
             "8192",
             label="Please key in the hard disk per node",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1775,7 +1793,7 @@ class ActiveActiveMaster(Profile):
         node_cpu = CalmVariable.Simple.int(
             "8",
             label="Please key in the number of vCPU for the node pool",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1785,7 +1803,7 @@ class ActiveActiveMaster(Profile):
         num_nodes = CalmVariable.Simple.int(
             "1",
             label="Please key in the number of nodes in the Node Pool",
-            regex="^[\d]*$",
+            regex="^[\\d]*$",
             validate_regex=False,
             is_mandatory=True,
             is_hidden=False,
@@ -1826,7 +1844,7 @@ class ActiveActiveMaster(Profile):
         Karbon.GetSSHKey(name="GetSSHKey")
 
 
-class Create_Karbon_Cluster20231109(Blueprint):
+class Create_Karbon_Cluster20240527(Blueprint):
     """Create Karbon Kubernetes Cluster using Karbon API.  The user can choose the following network interface: Flannel or Calico.  The user can also choose the type of Master Node: Single, Active-Passive, Active-Active with Load Balancer"""
 
     services = [Karbon]
@@ -1845,3 +1863,8 @@ class Create_Karbon_Cluster20231109(Blueprint):
         BP_CRED_PE_SC_Creds4,
         BP_CRED_PE_SC_Creds5,
     ]
+
+
+class BpMetadata(Metadata):
+
+    project = Ref.Project("BP Design Project")

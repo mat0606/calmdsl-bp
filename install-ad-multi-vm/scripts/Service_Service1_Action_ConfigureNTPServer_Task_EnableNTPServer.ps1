@@ -1,0 +1,1 @@
+Set-ItemProperty -Path “HKLM:\SYSTEM\CurrentControlSet\Services\w32time\TimeProviders\NtpServer” -Name “Enabled” -Value 1

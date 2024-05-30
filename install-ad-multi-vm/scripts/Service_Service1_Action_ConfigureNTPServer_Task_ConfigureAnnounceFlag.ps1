@@ -1,0 +1,1 @@
+Set-ItemProperty -Path “HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Config” -Name “AnnounceFlags” -Value 5

@@ -8,7 +8,9 @@ payload = {
  
 #print "PE IP: {}".format(ip)
 #base_url = "https://" + ip + ":9440/PrismGateway/services/rest/v2.0/storage_containers"
-base_url = "https://" + ip + ":9440/api/storage/v4.0.a2/config/storage-containers"
+#base_url = "https://" + ip + ":9440/api/storage/v4.0.a2/config/storage-containers"
+# changed by Matthew because the previous v4 api does not work for PC2024.1 and NKE 2.10
+base_url = "https://" + ip + ":9440/api/clustermgmt/v4.0.b2/config/storage-containers"
 url = base_url 
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "GET"
