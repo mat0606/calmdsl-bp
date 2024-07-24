@@ -4,7 +4,7 @@ pc_user = '@@{PC_Creds.username}@@'
 pc_pass = '@@{PC_Creds.secret}@@'
 
 count = 0
-while(count < 10):
+while(count < 15):
   # Set the address and make images call
   #url = "https://localhost:9440/karbon/v1/k8s/clusters/@@{cluster_name}@@/health"
   url = "https://@@{PC_IP}@@:9440/karbon/v1/k8s/clusters/@@{cluster_name}@@/health"

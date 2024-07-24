@@ -1,0 +1,5 @@
+resources:
+  boot_config: true
+  disk_list: {}
+  nic_list: {}
+  serial_port_list: {}

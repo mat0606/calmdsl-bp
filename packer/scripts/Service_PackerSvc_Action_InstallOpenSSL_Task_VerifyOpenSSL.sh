@@ -1,0 +1,2 @@
+which openssl
+openssl version

@@ -174,6 +174,28 @@ class Karbon(Service):
         description="",
     )
 
+    decoded_private_key = CalmVariable.Simple.multiline(
+        "",
+        label="",
+        regex="^(.|\\n)*$",
+        validate_regex=False,
+        is_mandatory=False,
+        is_hidden=False,
+        runtime=False,
+        description="",
+    )
+
+    original_private_key = CalmVariable.Simple.multiline(
+        "",
+        label="",
+        regex="^(.|\\n)*$",
+        validate_regex=False,
+        is_mandatory=False,
+        is_hidden=False,
+        runtime=False,
+        description="",
+    )
+
     @action
     def __create__():
         """System action for creating an application"""
@@ -317,19 +339,44 @@ class Karbon(Service):
     @action
     def GetSSHKey():
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetSSHKey",
             filename=os.path.join(
                 "scripts", "Service_Karbon_Action_GetSSHKey_Task_GetSSHKey.py"
             ),
             target=ref(Karbon),
-            variables=["certificate", "username", "karbon_ssh"],
+            variables=[
+                "certificate",
+                "username",
+                "karbon_ssh",
+                "private_key",
+                "original_private_key",
+            ],
+        )
+
+        CalmTask.SetVariable.escript.py3(
+            name="Get NKE cluster uuid",
+            filename=os.path.join(
+                "scripts", "Service_Karbon_Action_GetSSHKey_Task_GetNKEclusteruuid.py"
+            ),
+            target=ref(Karbon),
+            variables=["nke_cluster_uuid"],
+        )
+
+        CalmTask.SetVariable.ssh(
+            name="Decode private key",
+            filename=os.path.join(
+                "scripts", "Service_Karbon_Action_GetSSHKey_Task_Decodeprivatekey.sh"
+            ),
+            cred=ref(BP_CRED_CENTOS),
+            target=ref(Karbon),
+            variables=["decoded_private_key"],
         )
 
         CalmTask.Exec.ssh(
-            name="Output ssh key",
+            name="Output ssh file",
             filename=os.path.join(
-                "scripts", "Service_Karbon_Action_GetSSHKey_Task_Outputsshkey.sh"
+                "scripts", "Service_Karbon_Action_GetSSHKey_Task_Outputsshfile.sh"
             ),
             cred=ref(BP_CRED_CENTOS),
             target=ref(Karbon),
@@ -339,6 +386,28 @@ class Karbon(Service):
     def CreateK8Scluster(name="Create K8S cluster"):
 
         with parallel() as p0:
+            with branch(p0):
+                CalmTask.Exec.ssh(
+                    name="Base Setup",
+                    filename=os.path.join(
+                        "scripts",
+                        "Service_Karbon_Action_CreateK8Scluster_Task_BaseSetup.sh",
+                    ),
+                    cred=ref(BP_CRED_CENTOS),
+                    target=ref(Karbon),
+                )
+
+                CalmTask.Exec.ssh(
+                    name="Install kubectl",
+                    filename=os.path.join(
+                        "scripts",
+                        "Service_Karbon_Action_CreateK8Scluster_Task_Installkubectl.sh",
+                    ),
+                    cred=ref(BP_CRED_CENTOS),
+                    target=ref(Karbon),
+                )
+
+                Karbon.InstallHelm(name="Install Helm")
             with branch(p0):
                 CalmTask.SetVariable.escript.py2(
                     name="Get PE SC Credential",
@@ -370,7 +439,7 @@ class Karbon(Service):
                 )
 
                 CalmTask.Delay(
-                    name="Delay for 10 mins", delay_seconds=600, target=ref(Karbon)
+                    name="Delay for 5 mins", delay_seconds=300, target=ref(Karbon)
                 )
 
                 CalmTask.Exec.escript.py2(
@@ -381,28 +450,6 @@ class Karbon(Service):
                     ),
                     target=ref(Karbon),
                 )
-            with branch(p0):
-                CalmTask.Exec.ssh(
-                    name="Base Setup",
-                    filename=os.path.join(
-                        "scripts",
-                        "Service_Karbon_Action_CreateK8Scluster_Task_BaseSetup.sh",
-                    ),
-                    cred=ref(BP_CRED_CENTOS),
-                    target=ref(Karbon),
-                )
-
-                CalmTask.Exec.ssh(
-                    name="Install kubectl",
-                    filename=os.path.join(
-                        "scripts",
-                        "Service_Karbon_Action_CreateK8Scluster_Task_Installkubectl.sh",
-                    ),
-                    cred=ref(BP_CRED_CENTOS),
-                    target=ref(Karbon),
-                )
-
-                Karbon.InstallHelm(name="Install Helm")
 
     @action
     def InstallHelm(name="Install Helm"):
@@ -424,7 +471,7 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "centos7-calm-template.qcow2", bootable=True
+            "centos7-calm-20240703.qcow2", bootable=True
         )
     ]
     nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
@@ -472,7 +519,7 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "centos7-calm-template.qcow2", bootable=True
+            "centos7-calm-20240703.qcow2", bootable=True
         )
     ]
     nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
@@ -520,7 +567,7 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "centos7-calm-template.qcow2", bootable=True
+            "centos7-calm-20240703.qcow2", bootable=True
         )
     ]
     nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
@@ -1844,7 +1891,7 @@ class ActiveActiveMaster(Profile):
         Karbon.GetSSHKey(name="GetSSHKey")
 
 
-class Create_Karbon_Cluster20240527(Blueprint):
+class Create_Karbon_Cluster20240701(Blueprint):
     """Create Karbon Kubernetes Cluster using Karbon API.  The user can choose the following network interface: Flannel or Calico.  The user can also choose the type of Master Node: Single, Active-Passive, Active-Active with Load Balancer"""
 
     services = [Karbon]

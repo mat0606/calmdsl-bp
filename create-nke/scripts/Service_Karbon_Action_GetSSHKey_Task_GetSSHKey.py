@@ -1,3 +1,5 @@
+import base64
+
 payload ={}
 headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
 pc_user = '@@{PC_Creds.username}@@'
@@ -11,11 +13,18 @@ resp = urlreq(url, verb='GET',params=json.dumps(payload), headers=headers, auth=
 
 if resp.ok:
   sshconfig = resp.json()
-  print "certificate={}".format(sshconfig['certificate'])
-  privateKeyPEM = sshconfig['private_key'].encode('utf8')
-  print "private_key={}".format(privateKeyPEM)
-  print "karbon_ssh={}".format(privateKeyPEM)
-  print "username={}".format(sshconfig['username'])  
+  print ("certificate=" + sshconfig['certificate'])
+  #privateKeyPEM = sshconfig['private_key'].encode('utf8')
+  # https://www.geeksforgeeks.org/encoding-and-decoding-base64-strings-in-python/
+  privateKeyByte = sshconfig['private_key'].encode('ascii')
+  private_key_base64_bytes = base64.b64encode(privateKeyByte)
+  private_key_base64_decode_str = private_key_base64_bytes.decode('ascii')
+  
+  # Encode to base64 because ----- OPENSSH ------ will cause the 1st line to be passed and not the other line
+  print ("private_key=" + private_key_base64_decode_str)
+  print ("karbon_ssh=" + private_key_base64_decode_str)
+  print ("username={}" + sshconfig['username'])  
+  print ("original_private_key=" + sshconfig['private_key'])
 else:
   exit(1)
   

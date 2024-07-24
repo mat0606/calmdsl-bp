@@ -1,0 +1,2 @@
+address: '@@{pc_ip}@@'
+type: PROVISION_EXISTING_MACHINE

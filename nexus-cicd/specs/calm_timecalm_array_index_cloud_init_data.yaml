@@ -1,0 +1,5 @@
+|-
+#cloud-config
+fqdn: @@{name}@@.@@{domain_name}@@
+manage_etc_hosts: true
+hostname: @@{name}@@
