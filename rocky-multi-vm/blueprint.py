@@ -39,24 +39,6 @@ BP_CRED_ROCKY2Credential = basic_cred(
     type="PASSWORD",
 )
 
-
-AHV_78 = vm_disk_package(
-    name="AHV_78",
-    description="",
-    config={
-        "name": "AHV_78",
-        "image": {
-            "name": "AHV 78",
-            "type": "DISK_IMAGE",
-            "source": "http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2",
-            "architecture": "X86_64",
-        },
-        "product": {"name": "AHV", "version": "7_8"},
-        "checksum": {},
-    },
-)
-
-
 class Rocky(Service):
     @action
     def __delete__():
@@ -290,7 +272,7 @@ class Rocky_VM_2_3(Substrate):
     )
 
 
-class UpdateVMSpec_Update_ConfigAttrsb882fef4(AhvUpdateConfigAttrs):
+class UpdateVMSpec_Update_ConfigAttrsf5e0369f(AhvUpdateConfigAttrs):
 
     memory = PatchField.Ahv.memory(
         value="2", operation="equal", max_val=4, min_val=2, editable=True
@@ -369,7 +351,7 @@ class Small(Profile):
         AppEdit.UpdateConfig(
             name="Update VM Spec",
             target=ref(b1a5673a_deployment),
-            patch_attrs=UpdateVMSpec_Update_ConfigAttrsb882fef4,
+            patch_attrs=UpdateVMSpec_Update_ConfigAttrsf5e0369f,
         )
     ]
 
