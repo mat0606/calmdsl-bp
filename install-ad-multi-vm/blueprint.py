@@ -246,10 +246,10 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "windows-2022-calm-template.qcow2", bootable=True
+            "windows-2022-calm-ad-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.Sysprep.PreparedScript.withoutDomain(
         filename=os.path.join(
@@ -265,12 +265,12 @@ class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="DM3-POC044")
 
 
 class VM1_2(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Windows"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -286,7 +286,7 @@ class VM1_2(Substrate):
     )
 
 
-class Config1_Update_ConfigAttrs4a8e3d26(AhvUpdateConfigAttrs):
+class Config1_Update_ConfigAttrsfbe4ab50(AhvUpdateConfigAttrs):
 
     memory = PatchField.Ahv.memory(
         value="32", operation="equal", max_val=32, min_val=8, editable=True
@@ -328,13 +328,13 @@ class d1683190_deployment(Deployment):
 class Profile2(Profile):
 
     name = "Profile 2"
-    environments = [Ref.Environment(name="On-Premise 70 Environment")]
+
     deployments = [d1683190_deployment]
     patch_list = [
         AppEdit.UpdateConfig(
             name="Config1",
             target=ref(d1683190_deployment),
-            patch_attrs=Config1_Update_ConfigAttrs4a8e3d26,
+            patch_attrs=Config1_Update_ConfigAttrsfbe4ab50,
         )
     ]
     restore_configs = [
@@ -350,10 +350,6 @@ class Profile2(Profile):
             target=ref(d1683190_deployment),
             num_of_replicas="ONE",
             restore_config=ref(restore_configs[0]),
-            policy=AppProtection.ProtectionPolicy(
-                "On premise 70 snapshot policy",
-                rule="rule_d5ebb6c1d96bf06b354cf960661c4167",
-            ),
             snapshot_location_type="LOCAL",
         )
     ]
@@ -377,7 +373,7 @@ class Profile2(Profile):
     )
 
     subnet = CalmVariable.Simple(
-        "10.42.70.0/24",
+        "10.55.44.0/24",
         label="",
         is_mandatory=True,
         is_hidden=False,
@@ -422,7 +418,7 @@ class Profile2(Profile):
         CalmTask.ConfigExec(name="Action1", config=ref(Profile2.restore_configs[0]))
 
 
-class InstallADDNS20240122(Blueprint):
+class InstallADDNS(Blueprint):
 
     services = [Service1]
     packages = [Package2]

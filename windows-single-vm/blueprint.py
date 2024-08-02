@@ -43,7 +43,7 @@ class vmcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rhel92-calm-template.qcow2", bootable=True
+            "Windows2022-calm-template.qcow2", bootable=True
         )
     ]
     nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]

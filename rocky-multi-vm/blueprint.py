@@ -12,17 +12,17 @@ from calm.dsl.runbooks import CalmEndpoint as Endpoint
 
 # Secret Variables
 
-BP_CRED_RHEL_KEY = read_local_file("BP_CRED_RHEL_KEY")
+BP_CRED_ROCKY_KEY = read_local_file("BP_CRED_ROCKY_KEY")
 BP_CRED_DomainAdministrator_PASSWORD = read_local_file(
     "BP_CRED_DomainAdministrator_PASSWORD"
 )
-BP_CRED_RHEL2Credential_PASSWORD = read_local_file("BP_CRED_RHEL2Credential_PASSWORD")
+BP_CRED_ROCKY2Credential_PASSWORD = read_local_file("BP_CRED_ROCKY2Credential_PASSWORD")
 
 # Credentials
-BP_CRED_RHEL = basic_cred(
+BP_CRED_ROCKY = basic_cred(
     "nutanix",
-    BP_CRED_RHEL_KEY,
-    name="RHEL",
+    BP_CRED_ROCKY_KEY,
+    name="ROCKY",
     type="KEY",
     default=True,
 )
@@ -32,26 +32,37 @@ BP_CRED_DomainAdministrator = basic_cred(
     name="Domain Administrator",
     type="PASSWORD",
 )
-BP_CRED_RHEL2Credential = basic_cred(
-    "nutanix",
-    BP_CRED_RHEL2Credential_PASSWORD,
-    name="RHEL 2 Credential",
+BP_CRED_ROCKY2Credential = basic_cred(
+    "centos",
+    BP_CRED_ROCKY2Credential_PASSWORD,
+    name="ROCKY 2 Credential",
     type="PASSWORD",
 )
 
-class RHEL_Svc(Service):
+
+AHV_78 = vm_disk_package(
+    name="AHV_78",
+    description="",
+    config={
+        "name": "AHV_78",
+        "image": {
+            "name": "AHV 78",
+            "type": "DISK_IMAGE",
+            "source": "http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2",
+            "architecture": "X86_64",
+        },
+        "product": {"name": "AHV", "version": "7_8"},
+        "checksum": {},
+    },
+)
+
+
+class Rocky(Service):
     @action
     def __delete__():
         """System action for deleting an application. Deletes created VMs as well"""
 
-        CalmTask.Exec.ssh(
-            name="Unjoin Domain",
-            filename=os.path.join(
-                "scripts", "Service_RHEL_Svc_Action___delete___Task_UnjoinDomain.sh"
-            ),
-            cred=ref(BP_CRED_RHEL),
-            target=ref(RHEL_Svc),
-        )
+        Rocky.UnjoinADDomain(name="Unjoin AD Domain")
 
     @action
     def JoinADDomain(name="Join AD Domain"):
@@ -60,30 +71,30 @@ class RHEL_Svc(Service):
             name="Installed OS Packages",
             filename=os.path.join(
                 "scripts",
-                "Service_RHEL_Svc_Action_JoinADDomain_Task_InstalledOSPackages.sh",
+                "Service_Rocky_Action_JoinADDomain_Task_InstalledOSPackages.sh",
             ),
-            cred=ref(BP_CRED_RHEL),
-            target=ref(RHEL_Svc),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
         )
 
         CalmTask.Exec.ssh(
             name="Join DNS",
             filename=os.path.join(
-                "scripts", "Service_RHEL_Svc_Action_JoinADDomain_Task_JoinDNS.sh"
+                "scripts", "Service_Rocky_Action_JoinADDomain_Task_JoinDNS.sh"
             ),
-            cred=ref(BP_CRED_RHEL),
-            target=ref(RHEL_Svc),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
         )
 
-        RHEL_Svc.Prerequisites(name="Validate Prerequisites")
+        Rocky.Prerequisites(name="Validate Prerequisites")
 
         CalmTask.Exec.ssh(
             name="Join AD Domain",
             filename=os.path.join(
-                "scripts", "Service_RHEL_Svc_Action_JoinADDomain_Task_JoinADDomain.sh"
+                "scripts", "Service_Rocky_Action_JoinADDomain_Task_JoinADDomain.sh"
             ),
-            cred=ref(BP_CRED_RHEL),
-            target=ref(RHEL_Svc),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
         )
 
     @action
@@ -92,11 +103,10 @@ class RHEL_Svc(Service):
         CalmTask.Exec.ssh(
             name="Unjoin AD Domain",
             filename=os.path.join(
-                "scripts",
-                "Service_RHEL_Svc_Action_UnjoinADDomain_Task_UnjoinADDomain.sh",
+                "scripts", "Service_Rocky_Action_UnjoinADDomain_Task_UnjoinADDomain.sh"
             ),
-            cred=ref(BP_CRED_RHEL),
-            target=ref(RHEL_Svc),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
         )
 
     @action
@@ -106,30 +116,30 @@ class RHEL_Svc(Service):
             name="Validate DNS Lookup",
             filename=os.path.join(
                 "scripts",
-                "Service_RHEL_Svc_Action_Prerequisites_Task_ValidateDNSLookup.sh",
+                "Service_Rocky_Action_Prerequisites_Task_ValidateDNSLookup.sh",
             ),
-            cred=ref(BP_CRED_RHEL),
-            target=ref(RHEL_Svc),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
         )
 
         CalmTask.Exec.ssh(
             name="Validate connection to AD",
             filename=os.path.join(
                 "scripts",
-                "Service_RHEL_Svc_Action_Prerequisites_Task_ValidateconnectiontoAD.sh",
+                "Service_Rocky_Action_Prerequisites_Task_ValidateconnectiontoAD.sh",
             ),
-            cred=ref(BP_CRED_RHEL),
-            target=ref(RHEL_Svc),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
         )
 
         CalmTask.Exec.ssh(
             name="Synchronize time with AD",
             filename=os.path.join(
                 "scripts",
-                "Service_RHEL_Svc_Action_Prerequisites_Task_SynchronizetimewithAD.sh",
+                "Service_Rocky_Action_Prerequisites_Task_SynchronizetimewithAD.sh",
             ),
-            cred=ref(BP_CRED_RHEL),
-            target=ref(RHEL_Svc),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
         )
 
 
@@ -140,10 +150,10 @@ class rcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rhel92-calm-template.qcow2", bootable=True
+            "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -156,18 +166,18 @@ class rcalm_time(AhvVm):
 
     name = "r@@{calm_time}@@"
     resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="DM3-POC044")
     categories = {"AppType": "Default"}
 
 
-class RHEL_VM_Small(Substrate):
+class Rocky_VM(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
     provider_spec_editables = read_spec(
-        os.path.join("specs", "RHEL_VM_Small_create_spec_editables.yaml")
+        os.path.join("specs", "Rocky_VM_create_spec_editables.yaml")
     )
     readiness_probe = readiness_probe(
         connection_type="SSH",
@@ -176,94 +186,98 @@ class RHEL_VM_Small(Substrate):
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
         delay_secs="60",
-        credential=ref(BP_CRED_RHEL),
+        credential=ref(BP_CRED_ROCKY),
     )
 
 
-class rcalm_timeResources(AhvVmResources):
+class rcalm_array_indexcalm_timeResources(AhvVmResources):
 
     memory = 4
     vCPUs = 4
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rhel92-calm-template.qcow2", bootable=True
+            "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
-        filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
+        filename=os.path.join(
+            "specs", "rcalm_array_indexcalm_time_cloud_init_data.yaml"
+        )
     )
 
     power_state = "ON"
     boot_type = "LEGACY"
 
 
-class rcalm_time(AhvVm):
+class rcalm_array_indexcalm_time(AhvVm):
 
-    name = "r@@{calm_time}@@"
-    resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    name = "r-@@{calm_array_index}@@-@@{calm_time}@@"
+    resources = rcalm_array_indexcalm_timeResources
+    cluster = Ref.Cluster(name="DM3-POC044")
     categories = {"AppType": "Default"}
 
 
-class RHEL_VM_Medium(Substrate):
+class Rocky_VM_2(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
-    provider_spec = rcalm_time
+    provider_spec = rcalm_array_indexcalm_time
     provider_spec_editables = read_spec(
-        os.path.join("specs", "RHEL_VM_Medium_create_spec_editables.yaml")
+        os.path.join("specs", "Rocky_VM_2_create_spec_editables.yaml")
     )
     readiness_probe = readiness_probe(
         connection_type="SSH",
-        disabled=False,
+        disabled=True,
         retries="5",
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
         delay_secs="0",
-        credential=ref(BP_CRED_RHEL),
+        credential=ref(BP_CRED_ROCKY),
     )
 
 
-class rcalm_timeResources(AhvVmResources):
+class rcalm_array_indexcalm_timeResources(AhvVmResources):
 
     memory = 8
     vCPUs = 8
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rhel92-calm-template.qcow2", bootable=True
+            "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
-        filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
+        filename=os.path.join(
+            "specs", "rcalm_array_indexcalm_time_cloud_init_data.yaml"
+        )
     )
 
     power_state = "ON"
     boot_type = "LEGACY"
 
 
-class rcalm_time(AhvVm):
+class rcalm_array_indexcalm_time(AhvVm):
 
-    name = "r@@{calm_time}@@"
-    resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    name = "r-@@{calm_array_index}@@-@@{calm_time}@@"
+    resources = rcalm_array_indexcalm_timeResources
+    cluster = Ref.Cluster(name="DM3-POC044")
     categories = {"AppType": "Default"}
 
 
-class RHEL_VM_Large(Substrate):
+class Rocky_VM_2_3(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
-    provider_spec = rcalm_time
+    provider_spec = rcalm_array_indexcalm_time
     provider_spec_editables = read_spec(
-        os.path.join("specs", "RHEL_VM_Large_create_spec_editables.yaml")
+        os.path.join("specs", "Rocky_VM_2_3_create_spec_editables.yaml")
     )
     readiness_probe = readiness_probe(
         connection_type="SSH",
@@ -272,11 +286,11 @@ class RHEL_VM_Large(Substrate):
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
         delay_secs="0",
-        credential=ref(BP_CRED_RHEL),
+        credential=ref(BP_CRED_ROCKY),
     )
 
 
-class UpdateVMSpec_Update_ConfigAttrs0a630c12(AhvUpdateConfigAttrs):
+class UpdateVMSpec_Update_ConfigAttrsb882fef4(AhvUpdateConfigAttrs):
 
     memory = PatchField.Ahv.memory(
         value="2", operation="equal", max_val=4, min_val=2, editable=True
@@ -294,27 +308,27 @@ class UpdateVMSpec_Update_ConfigAttrs0a630c12(AhvUpdateConfigAttrs):
 
 class Package1(Package):
 
-    services = [ref(RHEL_Svc)]
+    services = [ref(Rocky)]
 
     @action
     def __install__():
 
-        RHEL_Svc.JoinADDomain(name="Join AD Domain")
+        Rocky.JoinADDomain(name="Join AD Domain")
 
 
 class Package3(Package):
 
-    services = [ref(RHEL_Svc)]
+    services = [ref(Rocky)]
 
     @action
     def __install__():
 
-        RHEL_Svc.JoinADDomain(name="Join AD Domain")
+        Rocky.JoinADDomain(name="Join AD Domain")
 
 
 class Package4(Package):
 
-    services = [ref(RHEL_Svc)]
+    services = [ref(Rocky)]
 
 
 class b1a5673a_deployment(Deployment):
@@ -324,7 +338,7 @@ class b1a5673a_deployment(Deployment):
     default_replicas = "1"
 
     packages = [ref(Package1)]
-    substrate = ref(RHEL_VM_Small)
+    substrate = ref(Rocky_VM)
 
 
 class b40b4e90_deployment(Deployment):
@@ -334,7 +348,7 @@ class b40b4e90_deployment(Deployment):
     default_replicas = "1"
 
     packages = [ref(Package3)]
-    substrate = ref(RHEL_VM_Medium)
+    substrate = ref(Rocky_VM_2)
 
 
 class _847a8ef3_deployment(Deployment):
@@ -345,7 +359,7 @@ class _847a8ef3_deployment(Deployment):
     default_replicas = "1"
 
     packages = [ref(Package4)]
-    substrate = ref(RHEL_VM_Large)
+    substrate = ref(Rocky_VM_2_3)
 
 
 class Small(Profile):
@@ -355,7 +369,7 @@ class Small(Profile):
         AppEdit.UpdateConfig(
             name="Update VM Spec",
             target=ref(b1a5673a_deployment),
-            patch_attrs=UpdateVMSpec_Update_ConfigAttrs0a630c12,
+            patch_attrs=UpdateVMSpec_Update_ConfigAttrsb882fef4,
         )
     ]
 
@@ -369,7 +383,7 @@ class Small(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.42.70.60",
+        "10.55.44.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -401,7 +415,7 @@ class Medium(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.42.70.60",
+        "10.55.44.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -433,7 +447,7 @@ class Large(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.42.70.60",
+        "10.55.44.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -451,13 +465,13 @@ class Large(Profile):
     )
 
 
-class RHELAD_20240105(Blueprint):
+class RockyAD20240715(Blueprint):
 
-    services = [RHEL_Svc]
+    services = [Rocky]
     packages = [Package1, AHV_78, Package3, Package4]
-    substrates = [RHEL_VM_Small, RHEL_VM_Medium, RHEL_VM_Large]
+    substrates = [Rocky_VM, Rocky_VM_2, Rocky_VM_2_3]
     profiles = [Small, Medium, Large]
-    credentials = [BP_CRED_RHEL, BP_CRED_DomainAdministrator, BP_CRED_RHEL2Credential]
+    credentials = [BP_CRED_ROCKY, BP_CRED_DomainAdministrator, BP_CRED_ROCKY2Credential]
 
 
 class BpMetadata(Metadata):
