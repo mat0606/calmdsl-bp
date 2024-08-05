@@ -450,7 +450,7 @@ class Large(Profile):
 class RockyAD20240715(Blueprint):
 
     services = [Rocky]
-    packages = [Package1, AHV_78, Package3, Package4]
+    packages = [Package1, Package3, Package4]
     substrates = [Rocky_VM, Rocky_VM_2, Rocky_VM_2_3]
     profiles = [Small, Medium, Large]
     credentials = [BP_CRED_ROCKY, BP_CRED_DomainAdministrator, BP_CRED_ROCKY2Credential]
