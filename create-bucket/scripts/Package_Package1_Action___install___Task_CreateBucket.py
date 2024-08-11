@@ -8,7 +8,7 @@ object_store_uuid = "@@{object_store_uuid}@@"
 bucket_name = "@@{bucket_name}@@"
 enable_versioning = "@@{enable_versioning}@@"
 
-if "@@{non_current_version_expiration}@@" > 0:
+if @@{non_current_version_expiration}@@ > 0:
   non_current_version_expiration = @@{non_current_version_expiration}@@
   expiration = @@{non_current_version_expiration}@@
 else:
@@ -20,7 +20,7 @@ headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "POST"
 
 
-create_path = "/oss/api/nutanix/v3/objectstores/{}/buckets".format(object_store_uuid)
+create_path = "/oss/api/nutanix/v3/objectstores/" + object_store_uuid + "/buckets"
 url = base_url + create_path
 
 create_payload = {
@@ -63,11 +63,11 @@ if expiration:
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(create_payload), verify=False, headers=headers)
 
 if r.ok:
-  print "Bucket Creation in Progress", json.dumps(json.loads(r.content), indent=4)
+  print ("Bucket Creation in Progress" + json.dumps(json.loads(r.content), indent=4))
   exit(0)
 
   # If the call failed
 else:
-  print "Bucket Creation Failed", json.dumps(json.loads(r.content), indent=4)
+  print ("Bucket Creation Failed" + json.dumps(json.loads(r.content), indent=4))
   exit(1)
 

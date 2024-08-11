@@ -52,7 +52,7 @@ class Package1(Package):
     @action
     def __install__():
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Create Bucket",
             filename=os.path.join(
                 "scripts", "Package_Package1_Action___install___Task_CreateBucket.py"
@@ -64,7 +64,7 @@ class Package1(Package):
             name="Sleep for 5 seconds", delay_seconds=15, target=ref(Service1)
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check Bucket Creation Status",
             filename=os.path.join(
                 "scripts",
@@ -73,7 +73,7 @@ class Package1(Package):
             target=ref(Service1),
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Assign Users to Bucket",
             filename=os.path.join(
                 "scripts",
@@ -99,7 +99,7 @@ class Default(Profile):
     deployments = [_525acce1_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.42.71.39",
+        "10.55.44.40",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -140,7 +140,7 @@ class Default(Profile):
     )
 
     object_store_uuid = CalmVariable.Simple(
-        "3c11ffbf-720a-4a0f-5718-a82cdcb2931c",
+        "2258b155-3f35-4d5d-5dc2-9a4c139ecd79",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -149,7 +149,7 @@ class Default(Profile):
     )
 
     object_users = CalmVariable.WithOptions.FromTask.Array(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_object_users_Task_SampleTask.py"

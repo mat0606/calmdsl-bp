@@ -30,7 +30,7 @@ payload = {
 }
 
 
-print payload
+print (payload)
 # Set the url and make the call
 url = "https://" + ip + ":9440/oss/api/nutanix/v3/objectstores/@@{object_store_uuid}@@/buckets/@@{bucket_name}@@/share"
 resp = urlreq(url, verb='PUT', auth='BASIC', user=user, passwd=password, params=json.dumps(payload), headers=headers, verify=False)

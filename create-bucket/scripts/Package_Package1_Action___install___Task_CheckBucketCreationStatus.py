@@ -4,7 +4,7 @@ password = "@@{PC_Creds.secret}@@"
 object_store_uuid = "@@{object_store_uuid}@@"
 
 bucket_name = "@@{bucket_name}@@"
-status_path = "/oss/api/nutanix/v3/objectstores/{}/buckets/{}".format(object_store_uuid, bucket_name)
+status_path = "/oss/api/nutanix/v3/objectstores/" + object_store_uuid + "/buckets/" + bucket_name
 
 base_url = "https://" + ip + ":9440"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
@@ -22,11 +22,11 @@ while bucket_create_pending:
     json_resp = r.json()
     if json_resp["status"]["state"] == 'COMPLETE':
       bucket_create_pending = False
-      print("Bucket '{}' creation is Completed.".format(bucket_name))
+      print("Bucket" + bucket_name + " creation is Completed.")
       break
     else:
-      print("Bucket creation '{}' is in '{}' state.".format(bucket_name, json_resp["status"]["state"]))
+      print("Bucket creation " + bucket_name + " is in " + json_resp["status"]["state"]) + " state."
       time.sleep(30)
   else:
-    print "Failure in getting bucket creation state"
-    print "Status Code: {0} Response: {1}".format(r.status_code, r.text) 
+    print ("Failure in getting bucket creation state")
+    print ("Status Code: " + r.status_code + " Response: " + r.text) 

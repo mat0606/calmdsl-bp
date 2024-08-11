@@ -18,7 +18,7 @@ if r.ok:
   user_list = []
   for user in user_list_json['users']:
     user_list.append(user['username'])
-  print ','.join(user_list)    
+  print (','.join(user_list))    
 else:
-  print "Response Status: " + str(r.status_code)
-  print r.text
+  print ("Response Status: " + str(r.status_code))
+  print (r.text)
