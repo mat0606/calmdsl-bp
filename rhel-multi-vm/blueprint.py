@@ -143,7 +143,7 @@ class rcalm_timeResources(AhvVmResources):
             "rhel92-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -156,13 +156,13 @@ class rcalm_time(AhvVm):
 
     name = "r@@{calm_time}@@"
     resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="DM3-POC044")
     categories = {"AppType": "Default"}
 
 
 class RHEL_VM_Small(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -190,7 +190,7 @@ class rcalm_timeResources(AhvVmResources):
             "rhel92-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -204,13 +204,13 @@ class rcalm_time(AhvVm):
 
     name = "r@@{calm_time}@@"
     resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="DM3-POC044")
     categories = {"AppType": "Default"}
 
 
 class RHEL_VM_Medium(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -238,7 +238,7 @@ class rcalm_timeResources(AhvVmResources):
             "rhel92-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -252,13 +252,13 @@ class rcalm_time(AhvVm):
 
     name = "r@@{calm_time}@@"
     resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="DM3-POC044")
     categories = {"AppType": "Default"}
 
 
 class RHEL_VM_Large(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -369,7 +369,7 @@ class Small(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.42.70.60",
+        "10.55.44.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -401,7 +401,7 @@ class Medium(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.42.70.60",
+        "10.55.44.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -433,7 +433,7 @@ class Large(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.42.70.60",
+        "10.55.44.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -454,7 +454,7 @@ class Large(Profile):
 class RHELAD_20240105(Blueprint):
 
     services = [RHEL_Svc]
-    packages = [Package1, AHV_78, Package3, Package4]
+    packages = [Package1, Package3, Package4]
     substrates = [RHEL_VM_Small, RHEL_VM_Medium, RHEL_VM_Large]
     profiles = [Small, Medium, Large]
     credentials = [BP_CRED_RHEL, BP_CRED_DomainAdministrator, BP_CRED_RHEL2Credential]
