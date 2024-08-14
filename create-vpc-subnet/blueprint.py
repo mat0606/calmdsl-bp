@@ -28,7 +28,7 @@ class Service1(Service):
     @action
     def CreateVPC(name="Create VPC"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetNetworkUUID",
             filename=os.path.join(
                 "scripts", "Service_Service1_Action_CreateVPC_Task_GetNetworkUUID.py"
@@ -37,7 +37,7 @@ class Service1(Service):
             variables=["pe_network_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Split external routable ip",
             filename=os.path.join(
                 "scripts",
@@ -47,7 +47,7 @@ class Service1(Service):
             variables=["ext_routable_ip", "ext_routable_ip_prefix"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Invoke API to create VPC",
             filename=os.path.join(
                 "scripts",
@@ -57,7 +57,7 @@ class Service1(Service):
             variables=["vpc_uuid"],
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check for VPC",
             filename=os.path.join(
                 "scripts", "Service_Service1_Action_CreateVPC_Task_CheckforVPC.py"
@@ -68,7 +68,7 @@ class Service1(Service):
     @action
     def DeleteVPC(name="Delete VPC"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get VPC UUID",
             filename=os.path.join(
                 "scripts", "Service_Service1_Action_DeleteVPC_Task_GetVPCUUID.py"
@@ -77,7 +77,7 @@ class Service1(Service):
             variables=["vpc_uuid"],
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Invoke API to delete VPC",
             filename=os.path.join(
                 "scripts",
@@ -86,7 +86,7 @@ class Service1(Service):
             target=ref(Service1),
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check for VPC",
             filename=os.path.join(
                 "scripts", "Service_Service1_Action_DeleteVPC_Task_CheckforVPC.py"
@@ -97,7 +97,7 @@ class Service1(Service):
     @action
     def CreateSubnetinVPC(name="Create Subnet in VPC"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get VPC UUID",
             filename=os.path.join(
                 "scripts",
@@ -107,7 +107,7 @@ class Service1(Service):
             variables=[],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Split Network IP Prefix",
             filename=os.path.join(
                 "scripts",
@@ -117,7 +117,7 @@ class Service1(Service):
             variables=["network_ip", "network_ip_prefix"],
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Create Subnet in VPC",
             filename=os.path.join(
                 "scripts",
@@ -126,7 +126,7 @@ class Service1(Service):
             target=ref(Service1),
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check Subnet",
             filename=os.path.join(
                 "scripts",
@@ -138,7 +138,7 @@ class Service1(Service):
     @action
     def DeleteSubnetinVPC(name="Delete Subnet in VPC"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Subnet UUID",
             filename=os.path.join(
                 "scripts",
@@ -148,7 +148,7 @@ class Service1(Service):
             variables=["subnet_uuid"],
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Delete Subnet",
             filename=os.path.join(
                 "scripts",
@@ -186,7 +186,7 @@ class Package1(Package):
 
         Service1.CreateSubnetinVPC(name="Create Subnet in VPC")
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Create Static Route for VPC",
             filename=os.path.join(
                 "scripts",
@@ -218,7 +218,7 @@ class Default(Profile):
     deployments = [ab0869f2_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.42.110.39",
+        "10.55.84.39",
         label="",
         is_mandatory=True,
         is_hidden=False,
@@ -272,7 +272,7 @@ class Default(Profile):
     )
 
     dns = CalmVariable.Simple(
-        "10.38.178.52",
+        "10.55.44.59",
         label="Please key in the DNS.  ",
         is_mandatory=True,
         is_hidden=False,
@@ -290,7 +290,7 @@ class Default(Profile):
     )
 
     external_subnet = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_external_subnet_Task_SampleTask.py"

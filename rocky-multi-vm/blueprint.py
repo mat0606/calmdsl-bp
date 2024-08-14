@@ -33,7 +33,7 @@ BP_CRED_DomainAdministrator = basic_cred(
     type="PASSWORD",
 )
 BP_CRED_ROCKY2Credential = basic_cred(
-    "centos",
+    "nutanix",
     BP_CRED_ROCKY2Credential_PASSWORD,
     name="ROCKY 2 Credential",
     type="PASSWORD",
@@ -135,7 +135,7 @@ class rcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC044")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -182,7 +182,7 @@ class rcalm_array_indexcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC044")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -232,7 +232,7 @@ class rcalm_array_indexcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC044")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(

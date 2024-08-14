@@ -14,18 +14,18 @@ url_method = "POST"
 count = 0
 while count < 6:
   r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
-  print "Status code: {}".format(r.status_code)
-  print "Output: {}".format(r.text)
+  #print ("Status code: " + r.status_code)
+  print ("Output: " + r.text)
   if r.ok:
     vpc_json = r.json()
       
     if vpc_json['metadata']['total_matches'] != 0:
-      print "VPC: {} is in the midst of deletion.  Sleeping for 10 seconds".format("@@{vpc_name}@@")
+      print ("VPC: @@{vpc_name}@@ is in the midst of deletion.  Sleeping for 10 seconds")
     else:
-      print "VPC: {} deleted successfully".format("@@{vpc_name}@@")
+      print ("VPC: @@{vpc_name}@@ deleted successfully")
       exit(0)    
   count = count + 1
   sleep(10)    
-print "VPC {0} was not deleted after 60 seconds.  Re-run this task if you think the VPC takes longer time than usual to delete".format("@@{vpc_name}@@")
+print ("VPC @@{vpc_name}@@ was not deleted after 60 seconds.  Re-run this task if you think the VPC takes longer time than usual to delete")
 exit(1)
 

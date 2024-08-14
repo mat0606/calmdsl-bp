@@ -17,5 +17,5 @@ subnet_list_json = r.json()
 for subnet in subnet_list_json['entities']:
 # print "cluster['spec']['name']"
   if subnet['spec']['resources']['subnet_type'] == 'VLAN':
-    subnet_list.append("{}".format(subnet['spec']['name']))
-print ','.join(subnet_list)
+    subnet_list.append(subnet['spec']['name'])
+print (','.join(subnet_list))

@@ -17,9 +17,9 @@ vpc_list = []
 vpc_list_json = r.json()
 for vpc in vpc_list_json['entities']:
   if vpc['spec']['name'] == "@@{vpc_name}@@":
-    print vpc['spec']['name']
-    print "vpc_uuid={0}".format(vpc['metadata']['uuid'])
+    print (vpc['spec']['name'])
+    print ("vpc_uuid=" + vpc['metadata']['uuid'])
     exit(0)
-print "No VPC {0} found".format("@@{vpc_name}@@")
+print ("No VPC @@{vpc_name}@@ found")
 exit(1)  
 

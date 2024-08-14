@@ -42,9 +42,9 @@ url = "https://" + ip + ":9440/api/nutanix/v3/vpcs"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "POST"
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
-print "Status code: {}".format(r.status_code)
-print "Output: {}".format(r.text)
+#print ("Status code: " + r.status_code)
+print ("Output: " + r.text)
 if r.ok:
-  print "VPC {0} is in the midst of creation".format("@@{vpc_name}@@")
+  print ("VPC @@{vpc_name}@@ is in the midst of creation")
 else:
   exit(1)
