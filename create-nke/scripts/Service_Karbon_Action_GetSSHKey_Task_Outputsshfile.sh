@@ -79,5 +79,5 @@ fi
 if [ $save_cert = false ]; then
   rm -f $private_key_file
   rm -f $cert_file
-fi " | tee /home/centos/@@{cluster_name}@@-ssh.sh
-sudo chmod +x /home/centos/@@{cluster_name}@@-ssh.sh
+fi " | tee /home/nutanix/@@{cluster_name}@@-ssh.sh
+sudo chmod +x /home/nutanix/@@{cluster_name}@@-ssh.sh

@@ -14,9 +14,9 @@ from calm.dsl.runbooks import CalmEndpoint as Endpoint
 
 BP_CRED_PE_Creds_PASSWORD = read_local_file("BP_CRED_PE_Creds_PASSWORD")
 BP_CRED_PC_Creds_PASSWORD = read_local_file("BP_CRED_PC_Creds_PASSWORD")
-BP_CRED_CENTOS_KEY = read_local_file("BP_CRED_CENTOS_KEY")
-BP_CRED_Centos2Credential_PASSWORD = read_local_file(
-    "BP_CRED_Centos2Credential_PASSWORD"
+BP_CRED_ROCKY_KEY = read_local_file("BP_CRED_ROCKY_KEY")
+BP_CRED_ROCKY2Credential_PASSWORD = read_local_file(
+    "BP_CRED_ROCKY2Credential_PASSWORD"
 )
 BP_CRED_PE_SC_Creds_PASSWORD = read_local_file("BP_CRED_PE_SC_Creds_PASSWORD")
 BP_CRED_CalmVM_Cred_PASSWORD = read_local_file("BP_CRED_CalmVM_Cred_PASSWORD")
@@ -39,16 +39,16 @@ BP_CRED_PC_Creds = basic_cred(
     name="PC_Creds",
     type="PASSWORD",
 )
-BP_CRED_CENTOS = basic_cred(
-    "centos",
-    BP_CRED_CENTOS_KEY,
-    name="CENTOS",
+BP_CRED_ROCKY = basic_cred(
+    "nutanix",
+    BP_CRED_ROCKY_KEY,
+    name="ROCKY",
     type="KEY",
 )
-BP_CRED_Centos2Credential = basic_cred(
-    "centos",
-    BP_CRED_Centos2Credential_PASSWORD,
-    name="Centos 2 Credential",
+BP_CRED_ROCKY2Credential = basic_cred(
+    "ROCKY",
+    BP_CRED_ROCKY2Credential_PASSWORD,
+    name="ROCKY 2 Credential",
     type="PASSWORD",
 )
 BP_CRED_PE_SC_Creds = basic_cred(
@@ -97,7 +97,7 @@ AHV_78 = vm_disk_package(
         "image": {
             "name": "AHV_78",
             "type": "DISK_IMAGE",
-            "source": "http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2",
+            "source": "http://download.nutanix.com/Calm/ROCKY-7-x86_64-2003.qcow2",
             "architecture": "X86_64",
         },
         "product": {"name": "AHV", "version": "7_8"},
@@ -165,15 +165,6 @@ class Karbon(Service):
         description="ssh certificate",
     )
 
-    centos_pub_key = CalmVariable.Simple(
-        "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAii7qFDhVadLx5lULAG/ooCUTA/ATSmXbArs+GdHxbUWd/bNGZCXnaQ2L1mSVVGDxfTbSaTJ3En3tVlMtD2RjZPdhqWESCaoj2kXLYSiNDS9qz3SK6h822je/f9O9CzCTrw2XGhnDVwmNraUvO5wmQObCDthTXc72PcBOd6oa4ENsnuY9HtiETg29TZXgCYPFXipLBHSZYkBmGgccAeY9dq5ywiywBJLuoSovXkkRJk3cd7GyhCRIwYzqfdgSmiAMYgJLrz/UuLxatPqXts2D8v1xqR9EPNZNzgd4QHK4of1lqsNRuz2SxkwqLcXSw0mGcAL8mIwVpzhPzwmENC5Orw== rsa-key-20190108",
-        label="",
-        is_mandatory=False,
-        is_hidden=False,
-        runtime=False,
-        description="",
-    )
-
     decoded_private_key = CalmVariable.Simple.multiline(
         "",
         label="",
@@ -205,7 +196,7 @@ class Karbon(Service):
     @action
     def DownloadKubeConfig(name="Download Kube Config"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Kubeconfig",
             filename=os.path.join(
                 "scripts",
@@ -221,7 +212,7 @@ class Karbon(Service):
                 "scripts",
                 "Service_Karbon_Action_DownloadKubeConfig_Task_OutputKubeconfigfile.sh",
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Karbon),
         )
 
@@ -236,7 +227,7 @@ class Karbon(Service):
             runtime=False,
             description="",
         )
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Add Worker Node",
             filename=os.path.join(
                 "scripts",
@@ -248,7 +239,7 @@ class Karbon(Service):
 
         CalmTask.Delay(name="Wait for 2 mins", delay_seconds=120, target=ref(Karbon))
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check Task Status",
             filename=os.path.join(
                 "scripts",
@@ -268,7 +259,7 @@ class Karbon(Service):
             runtime=False,
             description="",
         )
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Delete Worker Node",
             filename=os.path.join(
                 "scripts",
@@ -280,7 +271,7 @@ class Karbon(Service):
 
         CalmTask.Delay(name="Delay for 5 seconds", delay_seconds=5, target=ref(Karbon))
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check for Task Status",
             filename=os.path.join(
                 "scripts",
@@ -292,7 +283,7 @@ class Karbon(Service):
     @action
     def CreateNodePool(name="Create Node Pool"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Create new Node Pool",
             filename=os.path.join(
                 "scripts",
@@ -304,7 +295,7 @@ class Karbon(Service):
 
         CalmTask.Delay(name="Wait for 2 mins", delay_seconds=120, target=ref(Karbon))
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check Task Status",
             filename=os.path.join(
                 "scripts",
@@ -316,7 +307,7 @@ class Karbon(Service):
     @action
     def DeleteNodePool(name="Delete Node Pool"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Delete Node Pool",
             filename=os.path.join(
                 "scripts", "Service_Karbon_Action_DeleteNodePool_Task_DeleteNodePool.py"
@@ -327,7 +318,7 @@ class Karbon(Service):
 
         CalmTask.Delay(name="Wait for 10 seconds", delay_seconds=10, target=ref(Karbon))
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check for Task Status",
             filename=os.path.join(
                 "scripts",
@@ -368,7 +359,7 @@ class Karbon(Service):
             filename=os.path.join(
                 "scripts", "Service_Karbon_Action_GetSSHKey_Task_Decodeprivatekey.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Karbon),
             variables=["decoded_private_key"],
         )
@@ -378,7 +369,7 @@ class Karbon(Service):
             filename=os.path.join(
                 "scripts", "Service_Karbon_Action_GetSSHKey_Task_Outputsshfile.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Karbon),
         )
 
@@ -393,7 +384,7 @@ class Karbon(Service):
                         "scripts",
                         "Service_Karbon_Action_CreateK8Scluster_Task_BaseSetup.sh",
                     ),
-                    cred=ref(BP_CRED_CENTOS),
+                    cred=ref(BP_CRED_ROCKY),
                     target=ref(Karbon),
                 )
 
@@ -403,13 +394,13 @@ class Karbon(Service):
                         "scripts",
                         "Service_Karbon_Action_CreateK8Scluster_Task_Installkubectl.sh",
                     ),
-                    cred=ref(BP_CRED_CENTOS),
+                    cred=ref(BP_CRED_ROCKY),
                     target=ref(Karbon),
                 )
 
                 Karbon.InstallHelm(name="Install Helm")
             with branch(p0):
-                CalmTask.SetVariable.escript.py2(
+                CalmTask.SetVariable.escript.py3(
                     name="Get PE SC Credential",
                     filename=os.path.join(
                         "scripts",
@@ -419,7 +410,7 @@ class Karbon(Service):
                     variables=["pe_sc_credentia"],
                 )
 
-                CalmTask.SetVariable.escript.py2(
+                CalmTask.SetVariable.escript.py3(
                     name="GetNetworkUUID",
                     filename=os.path.join(
                         "scripts",
@@ -429,7 +420,7 @@ class Karbon(Service):
                     variables=[],
                 )
 
-                CalmTask.Exec.escript.py2(
+                CalmTask.Exec.escript.py3(
                     name="Create K8S cluster",
                     filename=os.path.join(
                         "scripts",
@@ -442,7 +433,7 @@ class Karbon(Service):
                     name="Delay for 5 mins", delay_seconds=300, target=ref(Karbon)
                 )
 
-                CalmTask.Exec.escript.py2(
+                CalmTask.Exec.escript.py3(
                     name="Check Cluster Health Status",
                     filename=os.path.join(
                         "scripts",
@@ -459,7 +450,7 @@ class Karbon(Service):
             filename=os.path.join(
                 "scripts", "Service_Karbon_Action_InstallHelm_Task_InstallHelm.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Karbon),
         )
 
@@ -471,10 +462,10 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "centos7-calm-20240703.qcow2", bootable=True
+            "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -489,12 +480,12 @@ class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="DM3-POC044")
 
 
 class Karbon_AHV(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -508,7 +499,7 @@ class Karbon_AHV(Substrate):
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
         delay_secs="60",
-        credential=ref(BP_CRED_CENTOS),
+        credential=ref(BP_CRED_ROCKY),
     )
 
 
@@ -519,10 +510,10 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "centos7-calm-20240703.qcow2", bootable=True
+            "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -537,12 +528,12 @@ class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="DM3-POC044")
 
 
 class Karbon_AHV_2(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -556,7 +547,7 @@ class Karbon_AHV_2(Substrate):
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
         delay_secs="60",
-        credential=ref(BP_CRED_CENTOS),
+        credential=ref(BP_CRED_ROCKY),
     )
 
 
@@ -567,10 +558,10 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "centos7-calm-20240703.qcow2", bootable=True
+            "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -585,12 +576,12 @@ class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="DM3-POC044")
 
 
 class Karbon_AHV_2_3(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -604,7 +595,7 @@ class Karbon_AHV_2_3(Substrate):
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
         delay_secs="60",
-        credential=ref(BP_CRED_CENTOS),
+        credential=ref(BP_CRED_ROCKY),
     )
 
 
@@ -620,7 +611,7 @@ class Package1(Package):
     @action
     def __uninstall__():
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Delete K8S cluster",
             filename=os.path.join(
                 "scripts",
@@ -687,7 +678,7 @@ class SingleMaster(Profile):
     deployments = [_75513331_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.42.70.39",
+        "10.55.44.40",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -696,7 +687,7 @@ class SingleMaster(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.42.70.50",
+        "10.55.44.50",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -765,7 +756,7 @@ class SingleMaster(Profile):
     )
 
     External_LB = CalmVariable.Simple(
-        "10.42.70.103",
+        "10.55.44.103",
         label="Please key in the external Load Balancer",
         is_mandatory=False,
         is_hidden=True,
@@ -813,7 +804,7 @@ class SingleMaster(Profile):
     )
 
     image_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_SingleMaster_variable_image_name_Task_SampleTask.py"
@@ -826,7 +817,7 @@ class SingleMaster(Profile):
     )
 
     network_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -840,7 +831,7 @@ class SingleMaster(Profile):
     )
 
     Storage_Container = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -856,7 +847,7 @@ class SingleMaster(Profile):
     Kubernetes_Node_Network = CalmVariable.WithOptions.Predefined.Array(
         ["Flannel", "Calico"],
         label="Please select the Kubernetes Node Network",
-        defaults=[""],
+        defaults=["Calico"],
         regex="^.*$",
         validate_regex=False,
         is_mandatory=True,
@@ -866,7 +857,7 @@ class SingleMaster(Profile):
     )
 
     PE_IP = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_SingleMaster_variable_PE_IP_Task_SampleTask.py"
@@ -879,7 +870,7 @@ class SingleMaster(Profile):
     )
 
     nutanix_cluster_uuid = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -893,7 +884,7 @@ class SingleMaster(Profile):
     )
 
     nutanix_cluster = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -919,9 +910,9 @@ class SingleMaster(Profile):
     )
 
     K8S_Version = CalmVariable.WithOptions.Predefined.Array(
-        ["1.2.16-05", "1.26.11-0", "1.27.8-0", "1.28.5-0"],
+        ["1.25.16-1", "1.26.11-1", "1.27.8-1", "1.28.5-1"],
+        defaults=["1.28.5-1"],
         label="Please select the Kubernetes version",
-        defaults=["1.28.5-0"],
         regex="^.*$",
         validate_regex=False,
         is_mandatory=True,
@@ -967,7 +958,7 @@ class SingleMaster(Profile):
             description="",
         )
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -995,7 +986,7 @@ class SingleMaster(Profile):
             description="",
         )
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -1074,7 +1065,7 @@ class SingleMaster(Profile):
     def DeleteNodePool(name="Delete Node Pool"):
 
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -1101,7 +1092,7 @@ class ActivePassiveMaster(Profile):
     deployments = [ec3c7adf_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.42.70.39",
+        "10.55.44.40",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -1110,7 +1101,7 @@ class ActivePassiveMaster(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.42.70.50",
+        "10.55.44.50",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -1174,7 +1165,7 @@ class ActivePassiveMaster(Profile):
     )
 
     Master_VIP2 = CalmVariable.Simple(
-        "10.42.70.102",
+        "10.55.44.102",
         label="Master VIP2",
         is_mandatory=False,
         is_hidden=True,
@@ -1183,7 +1174,7 @@ class ActivePassiveMaster(Profile):
     )
 
     Master_VIP = CalmVariable.Simple(
-        "10.42.70.101",
+        "10.55.44.101",
         label="Master VIP",
         is_mandatory=True,
         is_hidden=False,
@@ -1213,7 +1204,7 @@ class ActivePassiveMaster(Profile):
     )
 
     image_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1227,7 +1218,7 @@ class ActivePassiveMaster(Profile):
     )
 
     network_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1241,7 +1232,7 @@ class ActivePassiveMaster(Profile):
     )
 
     Storage_Container = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1257,7 +1248,7 @@ class ActivePassiveMaster(Profile):
     Kubernetes_Node_Network = CalmVariable.WithOptions.Predefined.Array(
         ["Flannel", "Calico"],
         label="Please select the Kubernetes Node Network",
-        defaults=[""],
+        defaults=["Calico"],
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
@@ -1265,7 +1256,7 @@ class ActivePassiveMaster(Profile):
     )
 
     PE_IP = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1279,7 +1270,7 @@ class ActivePassiveMaster(Profile):
     )
 
     nutanix_cluster_uuid = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1293,7 +1284,7 @@ class ActivePassiveMaster(Profile):
     )
 
     nutanix_cluster = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1316,9 +1307,9 @@ class ActivePassiveMaster(Profile):
     )
 
     K8S_Version = CalmVariable.WithOptions.Predefined.Array(
-        ["1.25.16-0", "1.26.11-0", "1.27.8-0", "1.28.5-0"],
+         ["1.25.16-1", "1.26.11-1", "1.27.8-1", "1.28.5-1"],
+        defaults=["1.28.5-1"],
         label="Please select the Kubernetes version",
-        defaults=["1.28.5-0"],
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
@@ -1362,7 +1353,7 @@ class ActivePassiveMaster(Profile):
             description="",
         )
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -1390,7 +1381,7 @@ class ActivePassiveMaster(Profile):
             description="",
         )
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -1469,7 +1460,7 @@ class ActivePassiveMaster(Profile):
     def DeleteNodePool(name="Delete Node Pool"):
 
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -1496,7 +1487,7 @@ class ActiveActiveMaster(Profile):
     deployments = [b45aa011_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.42.70.39",
+        "10.55.44.40",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -1505,7 +1496,7 @@ class ActiveActiveMaster(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.42.70.50",
+        "10.55.44.50",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -1565,7 +1556,7 @@ class ActiveActiveMaster(Profile):
     )
 
     External_LB = CalmVariable.Simple(
-        "10.42.70.103",
+        "10.55.44.103",
         label="Please key in the external Load Balancer",
         is_mandatory=True,
         is_hidden=False,
@@ -1574,7 +1565,7 @@ class ActiveActiveMaster(Profile):
     )
 
     Master_VIP2 = CalmVariable.Simple(
-        "10.42.70.102",
+        "10.55.44.102",
         label="Master VIP2",
         is_mandatory=True,
         is_hidden=False,
@@ -1583,7 +1574,7 @@ class ActiveActiveMaster(Profile):
     )
 
     Master_VIP = CalmVariable.Simple(
-        "10.42.70.101",
+        "10.55.44.101",
         label="Master VIP",
         is_mandatory=True,
         is_hidden=False,
@@ -1613,7 +1604,7 @@ class ActiveActiveMaster(Profile):
     )
 
     image_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1627,7 +1618,7 @@ class ActiveActiveMaster(Profile):
     )
 
     network_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1641,7 +1632,7 @@ class ActiveActiveMaster(Profile):
     )
 
     Storage_Container = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1657,7 +1648,7 @@ class ActiveActiveMaster(Profile):
     Kubernetes_Node_Network = CalmVariable.WithOptions.Predefined.Array(
         ["Flannel", "Calico"],
         label="Please select the Kubernetes Node Network",
-        defaults=[""],
+        defaults=["Calico"],
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
@@ -1665,7 +1656,7 @@ class ActiveActiveMaster(Profile):
     )
 
     PE_IP = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1679,7 +1670,7 @@ class ActiveActiveMaster(Profile):
     )
 
     nutanix_cluster_uuid = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1693,7 +1684,7 @@ class ActiveActiveMaster(Profile):
     )
 
     nutanix_cluster = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -1716,9 +1707,9 @@ class ActiveActiveMaster(Profile):
     )
 
     K8S_Version = CalmVariable.WithOptions.Predefined.Array(
-        ["1.25.16-0", "1.26.11-0", "1.27.8-0", "1.28.5-0"],
+         ["1.25.16-1", "1.26.11-1", "1.27.8-1", "1.28.5-1"],
+        defaults=["1.28.5-1"],
         label="Please select the Kubernetes version",
-        defaults=["1.28.5-0"],
         regex="^.*$",
         validate_regex=False,
         is_mandatory=True,
@@ -1764,7 +1755,7 @@ class ActiveActiveMaster(Profile):
             description="",
         )
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -1792,7 +1783,7 @@ class ActiveActiveMaster(Profile):
             description="",
         )
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -1871,7 +1862,7 @@ class ActiveActiveMaster(Profile):
     def DeleteNodePool(name="Delete Node Pool"):
 
         node_pool_name = CalmVariable.WithOptions.FromTask(
-            CalmTask.Exec.escript.py2(
+            CalmTask.Exec.escript.py3(
                 name="",
                 filename=os.path.join(
                     "scripts",
@@ -1895,14 +1886,14 @@ class Create_Karbon_Cluster20240701(Blueprint):
     """Create Karbon Kubernetes Cluster using Karbon API.  The user can choose the following network interface: Flannel or Calico.  The user can also choose the type of Master Node: Single, Active-Passive, Active-Active with Load Balancer"""
 
     services = [Karbon]
-    packages = [Package1, Package2, Package3, AHV_78]
+    packages = [Package1, Package2, Package3]
     substrates = [Karbon_AHV, Karbon_AHV_2, Karbon_AHV_2_3]
     profiles = [SingleMaster, ActivePassiveMaster, ActiveActiveMaster]
     credentials = [
         BP_CRED_PE_Creds,
         BP_CRED_PC_Creds,
-        BP_CRED_CENTOS,
-        BP_CRED_Centos2Credential,
+        BP_CRED_ROCKY,
+        BP_CRED_ROCKY2Credential,
         BP_CRED_PE_SC_Creds,
         BP_CRED_CalmVM_Cred,
         BP_CRED_PE_SC_Creds2,

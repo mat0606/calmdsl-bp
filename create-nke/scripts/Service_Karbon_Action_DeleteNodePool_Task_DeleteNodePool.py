@@ -21,13 +21,13 @@ resp = urlreq(url, verb='DELETE',params=json.dumps(payload), headers=headers, au
 
   # If the call went through successfully, find the image by name
 if resp.ok:
-  print "Creation of task to remove Node Pool was successful", json.dumps(json.loads(resp.content), indent=4)
+  print ("Creation of task to remove Node Pool was successful" + json.dumps(json.loads(resp.content), indent=4))
   add_task_uuid = resp.json()['task_uuid']
-  print "task_uuid={}".format(add_task_uuid)
+  print ("task_uuid=" + add_task_uuid)
   exit(0)
 
   # If the call failed
 else:
-  print "Creation of task to remove Node Pool failed", json.dumps(json.loads(resp.content), indent=4)
+  print ("Creation of task to remove Node Pool failed" + json.dumps(json.loads(resp.content), indent=4))
   exit(1)
 

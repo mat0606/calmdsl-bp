@@ -15,16 +15,16 @@ while(count < 10):
   if resp.ok:
     
     if task_status['percentage_complete'] == 100:
-      print "Removal of worker node was successful", json.dumps(json.loads(resp.content), indent=4)
+      print ("Removal of worker node was successful" + json.dumps(json.loads(resp.content), indent=4))
       exit(0)
     else:
-      print "Removal of Worker Node not ready. {0} percentage complete. Sleeping for 60 seconds".format(task_status['percentage_complete'])
+      print ("Removal of Worker Node not ready. " + task_status['percentage_complete'] + " percentage complete. Sleeping for 60 seconds")
       count = count + 1
       sleep(60) #Sleep for 1 min
   # If the call failed
   else:
-    print "Removal of Worker Node failed", json.dumps(json.loads(resp.content), indent=4)
+    print ("Removal of Worker Node failed" + json.dumps(json.loads(resp.content), indent=4))
     exit(1)
 
-print "Error: Operation Timeout after 10 mins"
+print ("Error: Operation Timeout after 10 mins")
 exit(1)

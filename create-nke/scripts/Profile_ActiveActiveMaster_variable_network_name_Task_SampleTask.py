@@ -18,6 +18,7 @@ subnet_list_json = r.json()
 for subnet in subnet_list_json['entities']:
  # print "cluster['spec']['name']"
   if subnet['spec']['cluster_reference']['name'] == "@@{nutanix_cluster}@@":
-    subnet_list.append("{}".format(subnet['spec']['name']))
+    subnet_list.append(subnet['spec']['name'])
   
-print ','.join(subnet_list)
+#print ','.join(subnet_list)
+print (",".join(subnet_list)) 

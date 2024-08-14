@@ -19,6 +19,7 @@ for image in image_list_json['entities']:
   if 'ntnx-' in image['spec']['name'] and 'msp' not in image['spec']['name']: #sometimes this value will be '{}'
     image_name = image['spec']['name']
     image_name = image_name.replace('karbon-','')
-    image_list.append("{}".format(image_name))
+    image_list.append(image_name)
 
-print ','.join(image_list)
+#print ','.join(image_list)
+print (",".join(image_list)) 

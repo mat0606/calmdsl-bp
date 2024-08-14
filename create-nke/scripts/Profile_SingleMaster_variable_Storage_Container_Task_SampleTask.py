@@ -24,6 +24,7 @@ sc_list_json = r.json()
 #  sc_list.append("{}".format(sc['name']))
 for sc in sc_list_json['data']:
   if sc['clusterExtId'] == "@@{nutanix_cluster_uuid}@@":
-    sc_list.append("{}".format(sc['name']))
+    sc_list.append(sc['name'])
   
-print ','.join(sc_list)    
+#print ','.join(sc_list)    
+print (",".join(sc_list))    

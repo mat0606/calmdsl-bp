@@ -58,7 +58,7 @@ payload = {
 
 
 if ("@@{Kubernetes_Node_Network}@@" == "Flannel"):
-  print "Configuring Flannel CNI"
+  print ("Configuring Flannel CNI")
  # payload = json.loads(karbon_config)
   payload['cni_config']['flannel_config'] = {
     "ip_pool_configs": [{
@@ -68,7 +68,7 @@ if ("@@{Kubernetes_Node_Network}@@" == "Flannel"):
   }
   #payload['cni_config'].insert(0, cni)
 else:
-  print "Configuring Calico CNI"
+  print ("Configuring Calico CNI")
   #payload = json.loads(karbon_config)
   payload['cni_config']['calico_config'] = {
     "ip_pool_configs": [{
@@ -78,7 +78,7 @@ else:
   }
   #payload['cni_config'].insert(0, cni)
 if ("@@{Master_Config}@@" == "Single Master"):
-  print "Configuring Single Master"
+  print ("Configuring Single Master")
   master_pool = {
     "node_pools": [
     {
@@ -117,7 +117,7 @@ if ("@@{Master_Config}@@" == "Single Master"):
   }
   payload['etcd_config'] = etcd_pool
 elif ("@@{Master_Config}@@" == "Active-Passive"):
-  print "Configuring Active-Passive Master"
+  print ("Configuring Active-Passive Master")
   master_pool = { 
     "active_passive_config": {
       "external_ipv4_address": "@@{Master_VIP}@@"
@@ -156,7 +156,7 @@ elif ("@@{Master_Config}@@" == "Active-Passive"):
   }
   payload['etcd_config'] = etcd_pool
 else:
-  print "Configuring Active-Active LoadBalancer Master"
+  print ("Configuring Active-Active LoadBalancer Master")
   master_pool = {
     "external_lb_config": {
       "external_ipv4_address": "@@{External_LB}@@",
@@ -203,7 +203,7 @@ else:
     }]  
   }
   payload['etcd_config'] = etcd_pool
-print json.dumps(payload)
+print (json.dumps(payload))
 
   
 pc_user = '@@{PC_Creds.username}@@'
@@ -218,11 +218,11 @@ resp = urlreq(url, verb='POST',params=json.dumps(payload), headers=headers, auth
 
   # If the call went through successfully, find the image by name
 if resp.ok:
-  print "Cluster create was successful", json.dumps(json.loads(resp.content), indent=4)
+  print ("Cluster create was successful" + json.dumps(json.loads(resp.content), indent=4))
   exit(0)
 
   # If the call failed
 else:
-  print "Cluster create failed", json.dumps(json.loads(resp.content), indent=4)
+  print ("Cluster create failed" + json.dumps(json.loads(resp.content), indent=4))
   exit(1)
 

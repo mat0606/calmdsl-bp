@@ -1,4 +1,4 @@
-rm /home/centos/@@{cluster_name}@@-kubectl.cfg
+rm /home/nutanix/@@{cluster_name}@@-kubectl.cfg
 
 echo "
 # -*- mode: yaml; -*-
@@ -20,7 +20,7 @@ contexts:
     cluster: @@{cluster_name}@@
     user: default-user-@@{cluster_name}@@
   name: @@{cluster_name}@@-context
-current-context: @@{cluster_name}@@-context" > /home/centos/@@{cluster_name}@@-kubectl.cfg
+current-context: @@{cluster_name}@@-context" > /home/nutanix/@@{cluster_name}@@-kubectl.cfg
 
 #echo @@{src_kubeconfig}@@ > @@{SRC_KUBECONFIG_name}@@
 #echo @@{dst_kubeconfig}@@ > @@{DST_KUBECONFIG_name}@@

@@ -33,11 +33,12 @@ if r.ok:
   #print cluster_list_json
   for cluster in cluster_list_json['entities']:
     #print cluster['spec']['name']
-    if cluster['spec']['name'].encode('utf-8') != 'Unnamed':
+    if cluster['spec']['name'] != 'Unnamed':
     #if cluster['spec']['name'] != 'Unnamed':
       clusterIP = getClusterIP(ip, cluster['metadata']['uuid'],user,password)
       #print clusterIP
       cluster_list.append(cluster['spec']['name'])
-  print ",".join(cluster_list)      
+  #print ",".join(cluster_list)      
+  print (",".join(cluster_list))    
 else: 
   exit(1)

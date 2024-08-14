@@ -23,8 +23,10 @@ cluster_list_json = r.json()
 #print "PE_Cluster_UUID={}".format(cluster_list_json['uuid'])
 for cluster in cluster_list_json['data']:
   if cluster['name'] == "@@{nutanix_cluster}@@":
-    print "{}".format(cluster['extId'])
+    #print "{}".format(cluster['extId'])
+    #print "{}".format(cluster['extId'])
+    print ("".join(cluster['extId'])) 
     exit(0)
-print "No cluster uuid found"
+print ("No cluster uuid found")
 exit(1)
 

@@ -25,6 +25,6 @@ if resp.ok:
     if pool['name'] == 'master-node-pool' or pool['name'] == 'etcd-node-pool':
       continue
     else:
-      pool_list.append("{}".format(pool['name']))
-print ','.join(pool_list)    
-
+      pool_list.append(pool['name'])
+#print ','.join(pool_list)    
+print (",".join(pool_list))    

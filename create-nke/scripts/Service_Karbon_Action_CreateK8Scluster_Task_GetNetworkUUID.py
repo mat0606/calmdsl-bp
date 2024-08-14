@@ -25,10 +25,10 @@ if resp.ok:
       if "@@{CalmVM_IP}@@" == "@@{PC_IP}@@":
         for subnet in entity['status']['resources']['subnet_reference_list']:
           if subnet['name'] == '@@{network_name}@@':
-            print "SUBNET_UUID={0}".format(subnet['uuid'])
+            print ("SUBNET_UUID=" + subnet['uuid'])
             exit(0)
         else:
-          print "Network '@@{network_name}@@' is not available in project '@@{calm_project_name}@@'.  Please check the network name and try again."
+          print ("Network '@@{network_name}@@' is not available in project '@@{calm_project_name}@@'.  Please check the network name and try again.")
           exit(1)
       else: #CalmVM is in different PC
         # This approach may retrieve the wrong subnet uuid under the following conditions:
@@ -37,17 +37,17 @@ if resp.ok:
         #    Change the name of the subnet from primary to primary_218 for cluster 218 and from primary to primary_170 to cluster_170
         for subnet in entity['spec']['resources']['external_network_list']:
           if subnet['name'] == '@@{network_name}@@':
-            print "SUBNET_UUID={0}".format(subnet['uuid'])
+            print ("SUBNET_UUID=" + subnet['uuid'])
             exit(0)
         else:
-          print "Network '@@{network_name}@@' is not available in project '@@{calm_project_name}@@'.  Please check the network name and try again."
+          print ("Network '@@{network_name}@@' is not available in project '@@{calm_project_name}@@'.  Please check the network name and try again.")
           exit(1)
         
 # If the call failed
 else:
-  print "Projects call failed", json.dumps(json.loads(resp.content), indent=4)
+  print ("Projects call failed" + json.dumps(json.loads(resp.content), indent=4))
   exit(1)
 
 # If we made it this far, there was an error
-print "ERROR: '@@{calm_project_name}@@' project was not found."
+print ("ERROR: '@@{calm_project_name}@@' project was not found.")
 exit(0)

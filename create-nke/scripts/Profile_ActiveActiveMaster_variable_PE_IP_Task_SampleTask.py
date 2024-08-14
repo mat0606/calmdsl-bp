@@ -11,4 +11,4 @@ r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=jso
 #print r.json()
 cluster_uuid = []
 cluster_list_json = r.json()
-print cluster_list_json['spec']['resources']['network']['external_ip']
+print (cluster_list_json['spec']['resources']['network']['external_ip'])
