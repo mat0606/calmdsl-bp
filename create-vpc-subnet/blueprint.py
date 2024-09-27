@@ -21,6 +21,7 @@ BP_CRED_PCCredential = basic_cred(
     name="PC Credential",
     type="PASSWORD",
     default=True,
+    editables={"username": True, "secret": True},
 )
 
 
@@ -218,7 +219,7 @@ class Default(Profile):
     deployments = [ab0869f2_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.55.84.39",
+        "10.55.22.40",
         label="",
         is_mandatory=True,
         is_hidden=False,
@@ -272,7 +273,7 @@ class Default(Profile):
     )
 
     dns = CalmVariable.Simple(
-        "10.55.44.59",
+        "10.55.35.56",
         label="Please key in the DNS.  ",
         is_mandatory=True,
         is_hidden=False,
