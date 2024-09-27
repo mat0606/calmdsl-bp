@@ -15,7 +15,7 @@ r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=jso
 account_list_json = r.json()
 for account in account_list_json['entities']:
   data = account['status']['resources']['data']
-  print "{}".format(data['server'])
+  print (data['server'])
   exit(0)
   
 

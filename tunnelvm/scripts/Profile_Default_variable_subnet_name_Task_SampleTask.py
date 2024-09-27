@@ -34,4 +34,4 @@ for subnet in subnet_list_json['entities']:
   if subnet['spec']['resources']['subnet_type'] == 'OVERLAY' and subnet['spec']['resources']['vpc_reference']['uuid'] == vpc_uuid:
     subnet_list.append("{}".format(subnet['spec']['name']))
   
-print ','.join(subnet_list)
+print (','.join(subnet_list))

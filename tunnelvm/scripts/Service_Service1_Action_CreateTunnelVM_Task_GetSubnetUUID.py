@@ -19,7 +19,7 @@ for subnet in subnet_list_json['entities']:
  # print "cluster['spec']['name']"
 #  print subnet
   if subnet['spec']['name'] == "@@{subnet_name}@@":
-    print "pe_network_UUID={}".format(subnet['metadata']['uuid'])
+    print ("pe_network_UUID=" + subnet['metadata']['uuid'])
     exit(0)
     
 exit(1)

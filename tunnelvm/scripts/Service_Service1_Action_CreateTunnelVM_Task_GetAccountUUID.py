@@ -13,4 +13,4 @@ account_list = []
 account_list_json = r.json()
 for account in account_list_json['entities']:
   if account['status']['name'] == "@@{account_name}@@": #sometimes this value will be '{}'
-    print "account_UUID={}".format(account['metadata']['uuid'])
+    print ("account_UUID=" + account['metadata']['uuid'])

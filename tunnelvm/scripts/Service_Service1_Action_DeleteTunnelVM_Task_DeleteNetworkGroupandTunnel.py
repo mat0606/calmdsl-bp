@@ -15,9 +15,9 @@ payload = {
 base_url = "https://" + ip + ":9440/api/nutanix/v3/network_groups/@@{network_group_uuid}@@/tunnels/@@{tunnel_uuid}@@"
 url = base_url
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
-print "Status code: {}".format(r.status_code)
-print "Output: {}".format(r.text)
+#print "Status code: {}".format(r.status_code)
+print ("Output: " + r.text)
 if r.ok:
-  print "Successful deletion of tunnel VM"
+  print ("Successful deletion of tunnel VM")
 else:
   exit(1)

@@ -16,6 +16,6 @@ r = process_request(url, url_method, user, password, headers, json.dumps(payload
 cluster_list = []
 cluster_list_json = r.json()
 
-print "pe_cluster_uuid={}".format(cluster_list_json['uuid'])
+print ("pe_cluster_uuid=" + cluster_list_json['uuid'])
 
 

@@ -16,4 +16,4 @@ def get_vpc_uuid(vpc_name):
         return vpc["metadata"]["uuid"]
     exit(1)
 vpc_uuid=get_vpc_uuid("@@{vpc_name}@@")
-print "vpc_uuid={0}".format(vpc_uuid)
+print ("vpc_uuid=" + vpc_uuid)

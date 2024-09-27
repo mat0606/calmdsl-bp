@@ -19,4 +19,4 @@ for account in account_list_json['entities']:
   #print account
   account_list.append(account['status']['name'])
     
-print ",".join(account_list)
+print (",".join(account_list))

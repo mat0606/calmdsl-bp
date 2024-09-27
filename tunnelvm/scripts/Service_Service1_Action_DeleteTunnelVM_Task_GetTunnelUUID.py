@@ -13,14 +13,14 @@ payload = {
 base_url = "https://" + ip + ":9440/api/nutanix/v3/tunnels/list"
 url = base_url
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
-print "Status code: {}".format(r.status_code)
-print "Output: {}".format(r.text)
+#print "Status code: {}".format(r.status_code)
+print ("Output: " + r.text)
 if r.ok:
-  print "Successful retrieval of tunnel VM"
+  print ("Successful retrieval of tunnel VM")
   tunnel_json = r.json()
   for tunnel in tunnel_json['entities']:
     if tunnel['metadata']['name'] == 'NTNX_LOCAL_AZ_VPC_@@{vpc_name}@@_Tunnel':
-      print "tunnel_uuid={}".format(tunnel['metadata']['uuid'])
+      print ("tunnel_uuid=" + tunnel['metadata']['uuid'])
       exit(0)
 else:
   exit(1)

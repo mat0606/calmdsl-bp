@@ -42,10 +42,10 @@ payload = {
 base_url = "https://" + ip + ":9440/api/nutanix/v3/network_groups/tunnels"
 url = base_url
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
-print "Status code: {}".format(r.status_code)
-print "Output: {}".format(r.text)
+#print "Status code: {}".format(r.status_code)
+print ("Output: " + r.text)
 if r.ok:
-  print "Successful invocation of tunnel VM"
-  print "network_group_uuid={}".format(network_group_tunnel_uuid)
+  print ("Successful invocation of tunnel VM")
+  print ("network_group_uuid=" + network_group_tunnel_uuid)
 else:
   exit(1)

@@ -14,17 +14,17 @@ while(count < 10):
 
   # If the call went through successfully, find the image by name
   if resp.ok:
-    print "Tunnel creation was successful", json.dumps(json.loads(resp.content), indent=4)
+    print ("Tunnel creation was successful" + json.dumps(json.loads(resp.content)))
     exit(0)
   
   elif (resp.status_code == 412):
-    print "Tunnel VM deployment not ready.  Sleeping for 60 seconds"
+    print ("Tunnel VM deployment not ready.  Sleeping for 60 seconds")
     count = count + 1
     sleep(60) #Sleep for 1 min
   # If the call failed
   else:
-    print "Tunnel VM failed", json.dumps(json.loads(resp.content), indent=4)
+    print ("Tunnel VM failed" + json.dumps(json.loads(resp.content)))
     exit(1)
 
-print "Error: Operation Timeout after 10 mins"
+print ("Error: Operation Timeout after 10 mins")
 exit(1)

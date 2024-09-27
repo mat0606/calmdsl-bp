@@ -53,7 +53,7 @@ class Service1(Service):
     @action
     def CreateTunnelVM(name="Create Tunnel VM"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetVPCUUID",
             filename=os.path.join(
                 "scripts", "Service_Service1_Action_CreateTunnelVM_Task_GetVPCUUID.py"
@@ -62,7 +62,7 @@ class Service1(Service):
             variables=["vpc_uuid"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetAccountUUID",
             filename=os.path.join(
                 "scripts",
@@ -72,7 +72,7 @@ class Service1(Service):
             variables=["account_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetSubnetUUID",
             filename=os.path.join(
                 "scripts",
@@ -82,7 +82,7 @@ class Service1(Service):
             variables=["pe_network_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetClusterUUID",
             filename=os.path.join(
                 "scripts",
@@ -92,7 +92,7 @@ class Service1(Service):
             variables=["pe_cluster_uuid"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Provision Tunnel VM",
             filename=os.path.join(
                 "scripts",
@@ -104,7 +104,7 @@ class Service1(Service):
 
         CalmTask.Delay(name="Delay for 3 mins", delay_seconds=180, target=ref(Service1))
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Verify Tunnel Status",
             filename=os.path.join(
                 "scripts",
@@ -116,7 +116,7 @@ class Service1(Service):
     @action
     def DeleteTunnelVM(name="Delete Tunnel VM"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetTunnelUUID",
             filename=os.path.join(
                 "scripts",
@@ -126,7 +126,7 @@ class Service1(Service):
             variables=["tunnel_uuid"],
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Delete Network Group and Tunnel",
             filename=os.path.join(
                 "scripts",
@@ -179,7 +179,7 @@ class Default(Profile):
     deployments = [_678c0ea8_deployment]
 
     subnet_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_subnet_name_Task_SampleTask.py"
@@ -192,7 +192,7 @@ class Default(Profile):
     )
 
     vpc_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_vpc_name_Task_SampleTask.py"
@@ -205,7 +205,7 @@ class Default(Profile):
     )
 
     PE_IP = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_PE_IP_Task_SampleTask.py"
@@ -218,7 +218,7 @@ class Default(Profile):
     )
 
     PC_IP = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_PC_IP_Task_SampleTask.py"
@@ -231,7 +231,7 @@ class Default(Profile):
     )
 
     account_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_account_name_Task_SampleTask.py"
@@ -244,7 +244,7 @@ class Default(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.42.70.50",
+        "10.55.35.50",
         label="",
         is_mandatory=False,
         is_hidden=True,
