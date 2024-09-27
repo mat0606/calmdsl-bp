@@ -13,4 +13,4 @@ vpc_list = []
 vpc_list_json = r.json()
 for vpc in vpc_list_json['entities']:
   vpc_list.append("{}".format(vpc['spec']['name']))
-print ','.join(vpc_list)
+print (','.join(vpc_list))

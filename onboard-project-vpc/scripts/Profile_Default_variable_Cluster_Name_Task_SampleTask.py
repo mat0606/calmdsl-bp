@@ -34,7 +34,7 @@ def getMemoryUtilization(pe_ip, pe_user, pe_password):
     memory_ppm = memory_ppm / 10000
     return memory_ppm
   else:
-    print "Error in retrieving Prism Element Memory Statistics: Status Code: {} Response: {}".format(r3.status_code, r3.text)
+    print ("Error in retrieving Prism Element Memory Statistics: Status Code: " + str(r3.status_code) + " Response: " + r3.text)
     exit(1)
     
 
@@ -81,7 +81,7 @@ if r.ok:
 
   #print "lowest_memory_cluster: {}  lowest_memory_utilization: {}".format(lowest_memory_cluster, lowest_memory_utilization)
   if lowest_memory_cluster != '':
-    print lowest_memory_cluster
+    print (lowest_memory_cluster)
   else:
     exit(1)
 else: 

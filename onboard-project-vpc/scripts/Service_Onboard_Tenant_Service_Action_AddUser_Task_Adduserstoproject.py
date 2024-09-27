@@ -173,7 +173,7 @@ acp_consumer_payload =  {
         "operation": "ADD"
       }
   
-print "acp_consumer_payload: {}".format(acp_consumer_payload)
+print ("acp_consumer_payload: " + acp_consumer_payload)
 acp_payload = [
       {
         "acp": {
@@ -343,8 +343,8 @@ url = base_url + "/@@{Project_UUID}@@"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "GET"
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, verify=False, headers=headers)
-print "Status Code: {}".format(r.status_code)
-print "Response: {}".format(r.text)
+#print "Status Code: {}".format(r.status_code)
+print ("Response: " + r.text)
 if r.ok:
   project_json = r.json()
   project_json.pop("status", None)
@@ -357,9 +357,9 @@ url = base_url + "/@@{Project_UUID}@@"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "PUT"
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(project_json), verify=False, headers=headers)
-print "Status code: {}".format(r.status_code)
-print "Response: {}".format(r.text)
+#print "Status code: {}".format(r.status_code)
+print ("Response: " + r.text)
 if r.ok:
-  print "Addition of users to project is successful"
+  print ("Addition of users to project is successful")
 else:
   exit(1)

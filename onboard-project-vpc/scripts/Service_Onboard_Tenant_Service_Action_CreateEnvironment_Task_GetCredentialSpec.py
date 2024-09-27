@@ -94,4 +94,4 @@ credential_list.append(getCredentialJSON(
     "@@{CalmVM Credential.secret}@@",
     cred_calmvm_uuid))       
   
-print "credential_list={}".format(credential_list)
+print ("credential_list=" + credential_list)

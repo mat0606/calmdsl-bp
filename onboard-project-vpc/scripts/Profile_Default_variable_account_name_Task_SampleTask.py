@@ -24,4 +24,4 @@ for account in account_list_json['entities']:
   #else:
   #  continue
     
-print ",".join(account_list)
+print (",".join(account_list))

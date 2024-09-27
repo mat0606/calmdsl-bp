@@ -21,6 +21,6 @@ cluster_uuid = []
 cluster_list_json = r.json()
 for cluster in cluster_list_json['entities']:
   if cluster['spec']['name'] == "@@{Cluster_Name}@@": #sometimes this value will be '{}'
-    print "{0}".format(cluster['metadata']['uuid'])
+    print (cluster['metadata']['uuid'])
     exit(0)
 exit(1)

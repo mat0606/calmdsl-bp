@@ -26,6 +26,6 @@ for sc in sc_list_json['entities']:
   sc_list.append("{}".format(sc['name']))
   
 if len(sc_list) > 0:  
-  print ','.join(sc_list)
+  print (','.join(sc_list))
 else:
   exit(1)

@@ -37,4 +37,4 @@ for calm_marketplace_item in calm_marketplace_list_json['entities']:
     bp_uuid = calm_marketplace_item['metadata']['uuid']
     bp_name = calm_marketplace_item['status']['name']
 
-print ','.join(calm_marketplace_list)    
+print (','.join(calm_marketplace_list))

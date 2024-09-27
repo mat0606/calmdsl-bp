@@ -124,7 +124,7 @@ WIN_SPEC = {
 }  
     
 
-print "WIN_SPEC={}".format(WIN_SPEC)
-print "cred_win_uuid={}".format(cred_win_uuid)
-print "cred_win_domain_uuid={}".format(cred_win_domain_uuid)
-print "win_subtrate_uuid={}".format(win_subtrate_uuid)
+print ("WIN_SPEC=" + WIN_SPEC)
+print ("cred_win_uuid=" + cred_win_uuid)
+print ("cred_win_domain_uuid=" + cred_win_domain_uuid)
+print ("win_subtrate_uuid=" + win_subtrate_uuid)

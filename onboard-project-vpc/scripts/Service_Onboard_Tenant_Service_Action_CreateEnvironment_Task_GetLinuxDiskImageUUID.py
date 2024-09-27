@@ -16,8 +16,8 @@ image_list = []
 image_list_json = r.json()
 for image in image_list_json['entities']:
   if image['spec']['name'] == "@@{env_image}@@": #sometimes this value will be '{}'
-    print "image_UUID={}".format(image['metadata']['uuid'])
+    print ("image_UUID=" + image['metadata']['uuid'])
     exit(0)
 
-print "No image matched the name: @@{env_image}@@"
+print ("No image matched the name: @@{env_image}@@")
 exit(1)

@@ -28,4 +28,4 @@ for user in user_list_json['entities']:
   if user['status']: #sometimes this value will be '{
     user_list.append(user['status']['name'].encode('utf-8'))
 
-print ','.join(user_list)    
+print (','.join(user_list))    

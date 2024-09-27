@@ -11,7 +11,7 @@ for consumer in consumer_list:
 selected_project_admin_list = @@{Tenant_Admin_List}@@
 # Choose the 1st project admin user to be the owner reference list
 selected_owner = selected_project_admin_list.pop()
-print "selected_owner: {}".format(selected_owner)
+print ("selected_owner: " + selected_owner)
 
 env_reference_list = [
                     {
@@ -120,19 +120,19 @@ else:
     "api_version": "3.1"
   }
 
-print payload
+print (payload)
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
   
 url2 = "https://" + ip + ":9440/api/nutanix/v3/projects"
 url_method = "POST"
 r2 = urlreq(url2, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
 #print "Response Status: {}".format(r2.status_code)
-print "Response: ", r2.json()
+print ("Response: ", r2.json())
 if r2.ok:
   project2_json = r2.json()
   project_uuid = project2_json['metadata']['uuid']
-  print json.dumps(project2_json)
-  print "Project_UUID={}".format(project_uuid)
+  print (json.dumps(project2_json))
+  print ("Project_UUID=" + project_uuid))
 else:
-  print "Status code: {} Response: {}".format(r2.status_code, r2.text)
+  print ("Status code: " + str(r2.status_code) + " Response: " + r2.text)
   exit(1)

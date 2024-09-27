@@ -14,6 +14,7 @@ from calm.dsl.builtins import *  # no_qa
 
 BP_CRED_PCCredential_PASSWORD = read_local_file("BP_CRED_PCCredential_PASSWORD")
 BP_CRED_PECredential_PASSWORD = read_local_file("BP_CRED_PECredential_PASSWORD")
+BP_CRED_CENTOS_KEY = read_local_file("BP_CRED_CENTOS_KEY")
 BP_CRED_Centos2Credential_PASSWORD = read_local_file(
     "BP_CRED_Centos2Credential_PASSWORD"
 )
@@ -37,6 +38,12 @@ BP_CRED_PECredential = basic_cred(
     BP_CRED_PECredential_PASSWORD,
     name="PE Credential",
     type="PASSWORD",
+)
+BP_CRED_CENTOS = basic_cred(
+    "centos",
+    BP_CRED_RHEL_KEY,
+    name="CENTOS",
+    type="KEY",
 )
 BP_CRED_Centos2Credential = basic_cred(
     "centos",
@@ -172,7 +179,7 @@ class Onboard_Tenant_Service(Service):
     @action
     def CreateEnvironment(name="Create Environment"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Linux Disk Image UUID",
             filename=os.path.join(
                 "scripts",
@@ -182,7 +189,7 @@ class Onboard_Tenant_Service(Service):
             variables=["image_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Win Disk Image UUID",
             filename=os.path.join(
                 "scripts",
@@ -192,7 +199,7 @@ class Onboard_Tenant_Service(Service):
             variables=["win_image_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Windows Spec",
             filename=os.path.join(
                 "scripts",
@@ -207,7 +214,7 @@ class Onboard_Tenant_Service(Service):
             ],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Linux Spec",
             filename=os.path.join(
                 "scripts",
@@ -217,7 +224,7 @@ class Onboard_Tenant_Service(Service):
             variables=["LINUX_SPEC", "cred_uuid", "cred2_uuid", "subtrate_uuid"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetAvailabilityZoneUUID",
             filename=os.path.join(
                 "scripts",
@@ -227,7 +234,7 @@ class Onboard_Tenant_Service(Service):
             variables=["az_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Credential Spec",
             filename=os.path.join(
                 "scripts",
@@ -237,7 +244,7 @@ class Onboard_Tenant_Service(Service):
             variables=["credential_list"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Create Calm Environment",
             filename=os.path.join(
                 "scripts",
@@ -247,7 +254,7 @@ class Onboard_Tenant_Service(Service):
             variables=["Environment_UUID"],
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Add Environment to Project",
             filename=os.path.join(
                 "scripts",
@@ -259,7 +266,7 @@ class Onboard_Tenant_Service(Service):
     @action
     def CreateProject(name="Create Project"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Create New Project",
             filename=os.path.join(
                 "scripts",
@@ -275,7 +282,7 @@ class Onboard_Tenant_Service(Service):
             target=ref(Onboard_Tenant_Service),
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check Project Creation Status",
             filename=os.path.join(
                 "scripts",
@@ -287,7 +294,7 @@ class Onboard_Tenant_Service(Service):
     @action
     def Assignblueprinttoproject(name="Assign blueprint to project"):
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Assign marketplace items to project",
             filename=os.path.join(
                 "scripts",
@@ -299,7 +306,7 @@ class Onboard_Tenant_Service(Service):
     @action
     def DeleteCalmApplication(name="Delete Calm Application"):
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Delete Project from Marketplace item",
             filename=os.path.join(
                 "scripts",
@@ -308,7 +315,7 @@ class Onboard_Tenant_Service(Service):
             target=ref(Onboard_Tenant_Service),
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Delete Environment",
             filename=os.path.join(
                 "scripts",
@@ -317,7 +324,7 @@ class Onboard_Tenant_Service(Service):
             target=ref(Onboard_Tenant_Service),
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Delete Project",
             filename=os.path.join(
                 "scripts",
@@ -326,7 +333,7 @@ class Onboard_Tenant_Service(Service):
             target=ref(Onboard_Tenant_Service),
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Check Project Deletion Status",
             filename=os.path.join(
                 "scripts",
@@ -338,7 +345,7 @@ class Onboard_Tenant_Service(Service):
     @action
     def AddUser(name="Add User"):
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Add users to project",
             filename=os.path.join(
                 "scripts",
@@ -350,7 +357,7 @@ class Onboard_Tenant_Service(Service):
     @action
     def tmp():
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Assign marketplace item",
             filename=os.path.join(
                 "scripts",
@@ -362,7 +369,7 @@ class Onboard_Tenant_Service(Service):
     @action
     def CreateRHELEnvironment(name="Create RHEL Environment"):
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Linux Disk Image UUID",
             filename=os.path.join(
                 "scripts",
@@ -372,7 +379,7 @@ class Onboard_Tenant_Service(Service):
             variables=["image_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Win Disk Image UUID",
             filename=os.path.join(
                 "scripts",
@@ -382,7 +389,7 @@ class Onboard_Tenant_Service(Service):
             variables=["win_image_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Windows Spec",
             filename=os.path.join(
                 "scripts",
@@ -397,7 +404,7 @@ class Onboard_Tenant_Service(Service):
             ],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Linux RHEL Spec",
             filename=os.path.join(
                 "scripts",
@@ -407,7 +414,7 @@ class Onboard_Tenant_Service(Service):
             variables=["LINUX_SPEC", "cred_uuid", "cred2_uuid", "subtrate_uuid"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetAvailabilityZoneUUID",
             filename=os.path.join(
                 "scripts",
@@ -417,7 +424,7 @@ class Onboard_Tenant_Service(Service):
             variables=["az_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Credential Spec",
             filename=os.path.join(
                 "scripts",
@@ -427,7 +434,7 @@ class Onboard_Tenant_Service(Service):
             variables=["credential_list"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Create RHEL Environment",
             filename=os.path.join(
                 "scripts",
@@ -437,7 +444,7 @@ class Onboard_Tenant_Service(Service):
             variables=["Environment_UUID"],
         )
 
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="Add Environment to Project",
             filename=os.path.join(
                 "scripts",
@@ -465,7 +472,7 @@ class VM1(Substrate):
     @action
     def __pre_create__():
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Tenant Admin UUID",
             filename=os.path.join(
                 "scripts",
@@ -475,7 +482,7 @@ class VM1(Substrate):
             variables=["Tenant_Admin_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Consumer UUID",
             filename=os.path.join(
                 "scripts", "Substrate_VM1_Action___pre_create___Task_GetConsumerUUID.py"
@@ -484,7 +491,7 @@ class VM1(Substrate):
             variables=["Tenant_Consumer_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Project Admin Role UUID",
             filename=os.path.join(
                 "scripts",
@@ -494,7 +501,7 @@ class VM1(Substrate):
             variables=["project_admin_role_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Consumer Role UUID",
             filename=os.path.join(
                 "scripts",
@@ -504,7 +511,7 @@ class VM1(Substrate):
             variables=["consumer_role_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetVPCUUID",
             filename=os.path.join(
                 "scripts", "Substrate_VM1_Action___pre_create___Task_GetVPCUUID.py"
@@ -513,7 +520,7 @@ class VM1(Substrate):
             variables=["vpc_uuid"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="GetNetworkUUID",
             filename=os.path.join(
                 "scripts", "Substrate_VM1_Action___pre_create___Task_GetNetworkUUID.py"
@@ -522,7 +529,7 @@ class VM1(Substrate):
             variables=["pe_network_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Account UUID",
             filename=os.path.join(
                 "scripts", "Substrate_VM1_Action___pre_create___Task_GetAccountUUID.py"
@@ -531,7 +538,7 @@ class VM1(Substrate):
             variables=["account_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get PE Account UUID",
             filename=os.path.join(
                 "scripts",
@@ -541,7 +548,7 @@ class VM1(Substrate):
             variables=["pe_account_UUID"],
         )
 
-        CalmTask.SetVariable.escript.py2(
+        CalmTask.SetVariable.escript.py3(
             name="Get Cluster Account Reference UUID",
             filename=os.path.join(
                 "scripts",
@@ -594,7 +601,7 @@ class Default(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.38.178.40",
+        "10.55.35.40",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -603,7 +610,7 @@ class Default(Profile):
     )
 
     PC_IP = CalmVariable.Simple(
-        "10.42.110.39",
+        "10.55.22.40",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -612,7 +619,7 @@ class Default(Profile):
     )
 
     MarketPlace_item = CalmVariable.WithOptions.FromTask.Array(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -626,7 +633,7 @@ class Default(Profile):
     )
 
     win_env_image = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_win_env_image_Task_SampleTask.py"
@@ -639,7 +646,7 @@ class Default(Profile):
     )
 
     env_rhel_image = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_env_rhel_image_Task_SampleTask.py"
@@ -652,7 +659,7 @@ class Default(Profile):
     )
 
     env_image = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_env_image_Task_SampleTask.py"
@@ -665,7 +672,7 @@ class Default(Profile):
     )
 
     PE_Storage_Container_Name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",
@@ -679,7 +686,7 @@ class Default(Profile):
     )
 
     PE_Network = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_PE_Network_Task_SampleTask.py"
@@ -694,7 +701,7 @@ class Default(Profile):
     )
 
     vpc_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_vpc_name_Task_SampleTask.py"
@@ -707,7 +714,7 @@ class Default(Profile):
     )
 
     account_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_account_name_Task_SampleTask.py"
@@ -729,7 +736,7 @@ class Default(Profile):
     )
 
     Tenant_Consumer = CalmVariable.WithOptions.FromTask.Array(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_Tenant_Consumer_Task_SampleTask.py"
@@ -744,7 +751,7 @@ class Default(Profile):
     )
 
     Tenant_Admin = CalmVariable.WithOptions.FromTask.Array(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_Tenant_Admin_Task_SampleTask.py"
@@ -757,7 +764,7 @@ class Default(Profile):
     )
 
     cluster_ip = CalmVariable.Simple(
-        "10.42.110.37",
+        "10.55.22.37",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -766,7 +773,7 @@ class Default(Profile):
     )
 
     cluster_uuid = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_cluster_uuid_Task_SampleTask.py"
@@ -779,7 +786,7 @@ class Default(Profile):
     )
 
     Cluster_Name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts", "Profile_Default_variable_Cluster_Name_Task_SampleTask.py"
@@ -802,7 +809,7 @@ class Default(Profile):
     )
 
     availability_zone_name = CalmVariable.WithOptions.FromTask(
-        CalmTask.Exec.escript.py2(
+        CalmTask.Exec.escript.py3(
             name="",
             filename=os.path.join(
                 "scripts",

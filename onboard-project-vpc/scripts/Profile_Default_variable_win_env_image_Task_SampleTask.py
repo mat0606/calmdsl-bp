@@ -18,4 +18,4 @@ image_list_json = r.json()
 for image in image_list_json['entities']:
   if image['spec']: #sometimes this value will be '{}'
     image_list.append("{}".format(image['spec']['name']))
-print ','.join(image_list)
+print (','.join(image_list))

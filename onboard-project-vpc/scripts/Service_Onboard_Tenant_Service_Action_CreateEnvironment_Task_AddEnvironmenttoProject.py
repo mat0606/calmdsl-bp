@@ -10,8 +10,8 @@ url = base_url + "/@@{Project_UUID}@@"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "GET"
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, verify=False, headers=headers)
-print "Status Code: {}".format(r.status_code)
-print "Response: {}".format(r.text)
+#print "Status Code: {}".format(r.status_code)
+print ("Response: " + r.text)
 if r.ok:
   project_json = r.json()
   project_json.pop("status", None)
@@ -36,18 +36,18 @@ if r.ok:
     }
   ]
 else:
-  print "Error retrieving project"
+  print ("Error retrieving project")
   exit(1)
-print "Project JSON to put: {}".format(project_json)
+print ("Project JSON to put: " + project_json)
 base_url = "https://" + ip + ":9440/api/nutanix/v3/projects_internal"
 url = base_url + "/@@{Project_UUID}@@"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "PUT"
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(project_json), verify=False, headers=headers)
-print "Status code: {}".format(r.status_code)
-print "Response: {}".format(r.text)
+#print "Status code: {}".format(r.status_code)
+print ("Response: " + r.text)
 if r.ok:
-  print "Successful addition of environment uuid: {}".format("@@{Environment_UUID}@@")
+  print ("Successful addition of environment uuid: @@{Environment_UUID}@@")
 else:
-  print "Unable to add environment uuid {} to project".format("@@{Environment_UUID}@@")
+  print ("Unable to add environment uuid @@{Environment_UUID}@@ to project")
   exit(1)

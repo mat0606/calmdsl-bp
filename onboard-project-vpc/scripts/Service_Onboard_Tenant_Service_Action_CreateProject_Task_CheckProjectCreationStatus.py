@@ -17,19 +17,19 @@ while(count < 5):
   # If the call went through successfully, find the image by name
   if resp.ok:
     project_json = resp.json()
-    print project_json
+    print (project_json)
     #if project_json['metadata']['length'] == 1:
     if project_json['metadata']['total_matches'] == 1:
-      print "Project creation was successful", json.dumps(json.loads(resp.content), indent=4)
+      print ("Project creation was successful" + json.dumps(json.loads(resp.content), indent=4))
       exit(0)  
     else:
-      print "Project Creation deployment not ready.  Sleeping for 60 seconds"
+      print ("Project Creation deployment not ready.  Sleeping for 60 seconds")
       count = count + 1
       sleep(60) #Sleep for 1 min
   # If the call failed
   else:
-    print "Project creation failed", json.dumps(json.loads(resp.content), indent=4)
+    print ("Project creation failed", json.dumps(json.loads(resp.content), indent=4))
     exit(1)
 
-print "Error: Operation Timeout after 5 mins"
+print ("Error: Operation Timeout after 5 mins")
 exit(1)

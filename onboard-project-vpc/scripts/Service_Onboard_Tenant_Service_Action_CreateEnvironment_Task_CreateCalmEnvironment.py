@@ -72,7 +72,7 @@ ENV_SPEC = {
     }
 }
 
-print "Environment: {}".format(json.dumps(ENV_SPEC))
+print ("Environment: " + json.dumps(ENV_SPEC))
 base_url = "https://" + ip + ":9440/api/nutanix/v3/environments"
 url = base_url 
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
@@ -82,11 +82,11 @@ r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=jso
 
 if r.ok:
   json_resp = json.loads(r.content)
-  print "Environment_UUID={}".format(json_resp["metadata"]["uuid"])
+  print ("Environment_UUID=" + json_resp["metadata"]["uuid"])
 else:
   print("Request failed")
-  print("Headers: {}".format(headers))
-  print('Status code: {}'.format(r.status_code))
-  print('Response: {}'.format(json.dumps(json.loads(r.content), indent=4)))
+  print("Headers: " + headers)
+  print('Status code: ' + str(r.status_code))
+  print('Response: ' + json.dumps(json.loads(r.content)))
   exit(1)
 

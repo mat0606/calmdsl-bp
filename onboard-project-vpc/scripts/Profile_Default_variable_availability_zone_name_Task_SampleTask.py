@@ -16,4 +16,4 @@ az_list = []
 az_list_json = r.json()
 for az in az_list_json['entities']:
   az_list.append(az['spec']['name'])
-print ",".join(az_list)
+print (",".join(az_list))

@@ -18,7 +18,7 @@ def get_vpc_uuid(vpc_name):
     if vpc["spec"]["name"]==vpc_name:
    #   print "In VPC"
       return vpc["metadata"]["uuid"]
-  print "Unable to find a matching VPC: {}".format(vpc_name)
+  print ("Unable to find a matching VPC: " + vpc_name)
   exit(1)
 
 vpc_uuid=get_vpc_uuid("@@{vpc_name}@@")
@@ -40,4 +40,4 @@ for subnet in subnet_list_json['entities']:
 #  print "{}".format(subnet['spec']['name'])
   if subnet['spec']['resources']['subnet_type'] == 'OVERLAY' and subnet['spec']['resources']['vpc_reference']['uuid'] == vpc_uuid:
     subnet_list.append("{}".format(subnet['spec']['name']))
-print ','.join(subnet_list)
+print (','.join(subnet_list))
