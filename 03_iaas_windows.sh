@@ -5,7 +5,6 @@ calm create bp --file windows-single-vm/blueprint.py --name Windows2022AD --forc
 calm launch bp "Windows2022AD" --app_name Windows2022 -p "Default" --environment ITC
 
 
-
 calm compile bp --file win-multi-vm/blueprint.py
 calm create bp --file win-multi-vm/blueprint.py --name Windows2022AD --force
 calm launch bp "Windows2022AD" --app_name Windows2022-3 -p "Small" --environment OTC
