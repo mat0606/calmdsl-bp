@@ -249,7 +249,7 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
             "windows-2022-calm-ad-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC044")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC035")]
 
     guest_customization = AhvVmGC.Sysprep.PreparedScript.withoutDomain(
         filename=os.path.join(
@@ -265,7 +265,7 @@ class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC044")
+    cluster = Ref.Cluster(name="DM3-POC035")
 
 
 class VM1_2(Substrate):
@@ -286,7 +286,7 @@ class VM1_2(Substrate):
     )
 
 
-class Config1_Update_ConfigAttrsfbe4ab50(AhvUpdateConfigAttrs):
+class Config1_Update_ConfigAttrs66802504(AhvUpdateConfigAttrs):
 
     memory = PatchField.Ahv.memory(
         value="32", operation="equal", max_val=32, min_val=8, editable=True
@@ -334,7 +334,7 @@ class Profile2(Profile):
         AppEdit.UpdateConfig(
             name="Config1",
             target=ref(d1683190_deployment),
-            patch_attrs=Config1_Update_ConfigAttrsfbe4ab50,
+            patch_attrs=Config1_Update_ConfigAttrs66802504,
         )
     ]
     restore_configs = [
@@ -373,7 +373,7 @@ class Profile2(Profile):
     )
 
     subnet = CalmVariable.Simple(
-        "10.55.44.0/24",
+        "10.55.35.0/24",
         label="",
         is_mandatory=True,
         is_hidden=False,

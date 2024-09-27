@@ -135,7 +135,7 @@ class rcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_OTC", cluster="DM3-POC035")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -148,7 +148,7 @@ class rcalm_time(AhvVm):
 
     name = "r@@{calm_time}@@"
     resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC044")
+    cluster = Ref.Cluster(name="DM3-POC035")
     categories = {"AppType": "Default"}
 
 
@@ -182,7 +182,7 @@ class rcalm_array_indexcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_OTC", cluster="DM3-POC035")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -198,7 +198,7 @@ class rcalm_array_indexcalm_time(AhvVm):
 
     name = "r-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = rcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC044")
+    cluster = Ref.Cluster(name="DM3-POC035")
     categories = {"AppType": "Default"}
 
 
@@ -232,7 +232,7 @@ class rcalm_array_indexcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_44", cluster="DM3-POC044")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary_OTC", cluster="DM3-POC035")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -248,7 +248,7 @@ class rcalm_array_indexcalm_time(AhvVm):
 
     name = "r-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = rcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC044")
+    cluster = Ref.Cluster(name="DM3-POC035")
     categories = {"AppType": "Default"}
 
 
@@ -365,7 +365,7 @@ class Small(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.44.59",
+        "10.55.35.56",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -397,7 +397,7 @@ class Medium(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.44.59",
+        "10.55.35.56",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -429,7 +429,7 @@ class Large(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.44.59",
+        "10.55.35.56",
         label="",
         is_mandatory=False,
         is_hidden=False,

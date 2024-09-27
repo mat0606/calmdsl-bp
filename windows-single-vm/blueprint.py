@@ -43,7 +43,7 @@ class vmcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "Windows2022-calm-template.qcow2", bootable=True
+            "windows-2022-calm-template.qcow2", bootable=True
         )
     ]
     nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]
@@ -60,12 +60,12 @@ class vmcalm_time(AhvVm):
 
     name = "vm-@@{calm_time}@@"
     resources = vmcalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC071")
+    cluster = Ref.Cluster(name="DM3-POC022")
 
 
 class VM1(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_71")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Windows"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_time
@@ -162,7 +162,7 @@ class Default(Profile):
     ]
 
     AD = CalmVariable.Simple(
-        "10.38.178.52",
+        "10.55.35.56",
         label="",
         is_mandatory=False,
         is_hidden=False,
