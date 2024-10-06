@@ -119,7 +119,7 @@ LINUX_SPEC = {
   "variable_list": [],
   "name": "Untitled"
 }
-print "LINUX_SPEC={}".format(LINUX_SPEC)
-print "cred_uuid={}".format(cred_uuid)
-print "cred2_uuid={}".format(cred2_uuid)
-print "subtrate_uuid={}".format(subtrate_uuid)
+print ("LINUX_SPEC=" + LINUX_SPEC)
+print ("cred_uuid=" + cred_uuid)
+print ("cred2_uuid=" + cred2_uuid)
+print ("subtrate_uuid=" + subtrate_uuid)
