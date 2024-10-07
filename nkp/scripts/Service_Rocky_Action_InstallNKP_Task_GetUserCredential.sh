@@ -1,0 +1,1 @@
+nkp get dashboard --kubeconfig="/home/nutanix/nkp2.conf"
