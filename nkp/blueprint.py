@@ -15,6 +15,7 @@ from calm.dsl.runbooks import CalmEndpoint as Endpoint
 BP_CRED_ROCKY_KEY = read_local_file("BP_CRED_ROCKY_KEY")
 BP_CRED_ROCKY2Credential_PASSWORD = read_local_file("BP_CRED_ROCKY2Credential_PASSWORD")
 BP_CRED_PCCredential_PASSWORD = read_local_file("BP_CRED_PCCredential_PASSWORD")
+BP_CRED_CalmVMCredential_PASSWORD = read_local_file("BP_CRED_CalmVMCredential_PASSWORD")
 
 # Credentials
 BP_CRED_ROCKY = basic_cred(
@@ -34,6 +35,12 @@ BP_CRED_PCCredential = basic_cred(
     "admin",
     BP_CRED_PCCredential_PASSWORD,
     name="PC Credential",
+    type="PASSWORD",
+)
+BP_CRED_CalmVMCredential = basic_cred(
+    "admin",
+    BP_CRED_CalmVMCredential_PASSWORD,
+    name="CalmVM Credential",
     type="PASSWORD",
 )
 
@@ -153,7 +160,7 @@ class Rocky_VM(Substrate):
     )
 
 
-class UpdateVMSpec_Update_ConfigAttrs3d619dc7(AhvUpdateConfigAttrs):
+class UpdateVMSpec_Update_ConfigAttrs183bacfd(AhvUpdateConfigAttrs):
 
     memory = PatchField.Ahv.memory(
         value="2", operation="equal", max_val=4, min_val=2, editable=True
@@ -198,7 +205,7 @@ class Default(Profile):
         AppEdit.UpdateConfig(
             name="Update VM Spec",
             target=ref(b1a5673a_deployment),
-            patch_attrs=UpdateVMSpec_Update_ConfigAttrs3d619dc7,
+            patch_attrs=UpdateVMSpec_Update_ConfigAttrs183bacfd,
         )
     ]
 
@@ -232,15 +239,6 @@ class Default(Profile):
     registry_mirror_url = CalmVariable.Simple(
         "registry.nutanixdemo.com/docker.io",
         label="Please key in the registry mirror url",
-        is_mandatory=True,
-        is_hidden=False,
-        runtime=True,
-        description="",
-    )
-
-    PC_IP = CalmVariable.Simple(
-        "10.55.22.40",
-        label="Please key in the Prism Central IP address",
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
@@ -320,6 +318,51 @@ class Default(Profile):
         description="",
     )
 
+    PC_IP = CalmVariable.WithOptions.FromTask(
+        CalmTask.Exec.escript.py3(
+            name="",
+            filename=os.path.join(
+                "scripts", "Profile_Default_variable_PC_IP_Task_SampleTask.py"
+            ),
+        ),
+        label="Please key in the Prism Central IP address",
+        is_mandatory=True,
+        is_hidden=False,
+        description="",
+    )
+
+    account_name = CalmVariable.WithOptions.FromTask(
+        CalmTask.Exec.escript.py3(
+            name="",
+            filename=os.path.join(
+                "scripts", "Profile_Default_variable_account_name_Task_SampleTask.py"
+            ),
+        ),
+        label="Please select the account name",
+        is_mandatory=True,
+        is_hidden=False,
+        description="",
+    )
+
+    pc_calm_setup = CalmVariable.WithOptions(
+        ["nutanix_pc", "nutanix"],
+        label="",
+        default="nutanix_pc",
+        is_mandatory=False,
+        is_hidden=True,
+        runtime=False,
+        description="",
+    )
+
+    CalmVM_IP = CalmVariable.Simple(
+        "10.55.35.50",
+        label="",
+        is_mandatory=False,
+        is_hidden=False,
+        runtime=False,
+        description="",
+    )
+
 
 class NKP(Blueprint):
 
@@ -327,7 +370,12 @@ class NKP(Blueprint):
     packages = [Package1, NKP]
     substrates = [Rocky_VM]
     profiles = [Default]
-    credentials = [BP_CRED_ROCKY, BP_CRED_ROCKY2Credential, BP_CRED_PCCredential]
+    credentials = [
+        BP_CRED_ROCKY,
+        BP_CRED_ROCKY2Credential,
+        BP_CRED_PCCredential,
+        BP_CRED_CalmVMCredential,
+    ]
 
 
 class BpMetadata(Metadata):
