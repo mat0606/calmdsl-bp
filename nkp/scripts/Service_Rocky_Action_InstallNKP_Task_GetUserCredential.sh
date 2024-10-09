@@ -1,1 +1,1 @@
-nkp get dashboard --kubeconfig="/home/nutanix/nkp2.conf"
+nkp get dashboard --kubeconfig="/home/nutanix/@@{nkp_cluster_name}@@.conf"

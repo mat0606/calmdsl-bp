@@ -160,7 +160,7 @@ class Rocky_VM(Substrate):
     )
 
 
-class UpdateVMSpec_Update_ConfigAttrs183bacfd(AhvUpdateConfigAttrs):
+class UpdateVMSpec_Update_ConfigAttrs6850471d(AhvUpdateConfigAttrs):
 
     memory = PatchField.Ahv.memory(
         value="2", operation="equal", max_val=4, min_val=2, editable=True
@@ -205,7 +205,7 @@ class Default(Profile):
         AppEdit.UpdateConfig(
             name="Update VM Spec",
             target=ref(b1a5673a_deployment),
-            patch_attrs=UpdateVMSpec_Update_ConfigAttrs183bacfd,
+            patch_attrs=UpdateVMSpec_Update_ConfigAttrs6850471d,
         )
     ]
 
