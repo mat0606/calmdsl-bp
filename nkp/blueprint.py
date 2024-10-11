@@ -24,41 +24,28 @@ BP_CRED_ROCKY = basic_cred(
     name="ROCKY",
     type="KEY",
     default=True,
+    editables={"username": True, "secret": True},
 )
 BP_CRED_ROCKY2Credential = basic_cred(
     "nutanix",
     BP_CRED_ROCKY2Credential_PASSWORD,
     name="ROCKY 2 Credential",
     type="PASSWORD",
+    editables={"username": True, "secret": True},
 )
 BP_CRED_PCCredential = basic_cred(
     "admin",
     BP_CRED_PCCredential_PASSWORD,
     name="PC Credential",
     type="PASSWORD",
+    editables={"username": True, "secret": True},
 )
 BP_CRED_CalmVMCredential = basic_cred(
     "admin",
     BP_CRED_CalmVMCredential_PASSWORD,
     name="CalmVM Credential",
     type="PASSWORD",
-)
-
-
-NKP = vm_disk_package(
-    name="NKP",
-    description="",
-    config={
-        "name": "NKP",
-        "image": {
-            "name": "nkp-rocky-9.4-release-1.29.6-20240816215147.qcow2",
-            "type": "DISK_IMAGE",
-            "source": "http://10.55.251.38/users/Matthew%20Ong/NKP2.12/nkp-rocky-9.4-release-1.29.6-20240816215147.qcow2",
-            "architecture": "X86_64",
-        },
-        "product": {"name": "NKP Rocky Linux 9.4", "version": "1.29.6-20240816215147."},
-        "checksum": {},
-    },
+    editables={"username": True, "secret": True},
 )
 
 
@@ -112,6 +99,39 @@ class Rocky(Service):
             target=ref(Rocky),
         )
 
+    @action
+    def InstallPrerequisites(name="Install Prerequisites"):
+
+        CalmTask.Exec.ssh(
+            name="Install Docker",
+            filename=os.path.join(
+                "scripts",
+                "Service_Rocky_Action_InstallPrerequisites_Task_InstallDocker.sh",
+            ),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
+        )
+
+        CalmTask.Exec.ssh(
+            name="Install bash completion",
+            filename=os.path.join(
+                "scripts",
+                "Service_Rocky_Action_InstallPrerequisites_Task_Installbashcompletion.sh",
+            ),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
+        )
+
+        CalmTask.Exec.ssh(
+            name="Install k9s",
+            filename=os.path.join(
+                "scripts",
+                "Service_Rocky_Action_InstallPrerequisites_Task_Installk9s.sh",
+            ),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Rocky),
+        )
+
 
 class nkpbootstrapcalm_timeResources(AhvVmResources):
 
@@ -160,7 +180,7 @@ class Rocky_VM(Substrate):
     )
 
 
-class UpdateVMSpec_Update_ConfigAttrs6850471d(AhvUpdateConfigAttrs):
+class UpdateVMSpec_Update_ConfigAttrsa6e059d9(AhvUpdateConfigAttrs):
 
     memory = PatchField.Ahv.memory(
         value="2", operation="equal", max_val=4, min_val=2, editable=True
@@ -185,6 +205,8 @@ class Package1(Package):
     @action
     def __install__():
 
+        Rocky.InstallPrerequisites(name="Install Prerequisities")
+
         Rocky.InstallNKP(name="Install NKP Management Cluster")
 
 
@@ -205,7 +227,7 @@ class Default(Profile):
         AppEdit.UpdateConfig(
             name="Update VM Spec",
             target=ref(b1a5673a_deployment),
-            patch_attrs=UpdateVMSpec_Update_ConfigAttrs6850471d,
+            patch_attrs=UpdateVMSpec_Update_ConfigAttrsa6e059d9,
         )
     ]
 
@@ -246,7 +268,7 @@ class Default(Profile):
     )
 
     control_plane_endpoint = CalmVariable.Simple(
-        "10.55.22.51",
+        "",
         label="Please key in the control plane VIP",
         is_mandatory=True,
         is_hidden=False,
@@ -255,7 +277,7 @@ class Default(Profile):
     )
 
     lb_end_ip = CalmVariable.Simple(
-        "10.55.22.53",
+        "",
         label="Please key in the end IP of the load balancer",
         is_mandatory=True,
         is_hidden=False,
@@ -264,7 +286,7 @@ class Default(Profile):
     )
 
     lb_start_ip = CalmVariable.Simple(
-        "10.55.22.53",
+        "",
         label="Please key in the start IP of the load balancer",
         is_mandatory=True,
         is_hidden=False,
@@ -367,7 +389,7 @@ class Default(Profile):
 class NKP(Blueprint):
 
     services = [Rocky]
-    packages = [Package1, NKP]
+    packages = [Package1]
     substrates = [Rocky_VM]
     profiles = [Default]
     credentials = [
