@@ -27,7 +27,7 @@ BP_CRED_ROCKY = basic_cred(
     default=True,
 )
 BP_CRED_DomainAdministrator = basic_cred(
-    "administrator@ntnxlab.local",
+    "administrator@ntnxlab1.local",
     BP_CRED_DomainAdministrator_PASSWORD,
     name="Domain Administrator",
     type="PASSWORD",
@@ -135,7 +135,7 @@ class rcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_OTC", cluster="DM3-POC035")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -148,13 +148,13 @@ class rcalm_time(AhvVm):
 
     name = "r@@{calm_time}@@"
     resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC035")
+    cluster = Ref.Cluster(name="DM3-POC088")
     categories = {"AppType": "Default"}
 
 
 class Rocky_VM(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("PP Cluster")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -182,7 +182,7 @@ class rcalm_array_indexcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_OTC", cluster="DM3-POC035")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -198,13 +198,13 @@ class rcalm_array_indexcalm_time(AhvVm):
 
     name = "r-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = rcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC035")
+    cluster = Ref.Cluster(name="DM3-POC088")
     categories = {"AppType": "Default"}
 
 
 class Rocky_VM_2(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("PP Cluster")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_array_indexcalm_time
@@ -232,7 +232,7 @@ class rcalm_array_indexcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_OTC", cluster="DM3-POC035")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join(
@@ -248,13 +248,13 @@ class rcalm_array_indexcalm_time(AhvVm):
 
     name = "r-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = rcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC035")
+    cluster = Ref.Cluster(name="DM3-POC088")
     categories = {"AppType": "Default"}
 
 
 class Rocky_VM_2_3(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("PP Cluster")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_array_indexcalm_time
@@ -356,7 +356,7 @@ class Small(Profile):
     ]
 
     domain_name = CalmVariable.Simple(
-        "ntnxlab.local",
+        "ntnxlab1.local",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -365,7 +365,7 @@ class Small(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.35.56",
+        "10.55.88.64",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -388,7 +388,7 @@ class Medium(Profile):
     deployments = [b40b4e90_deployment]
 
     domain_name = CalmVariable.Simple(
-        "ntnxlab.local",
+        "ntnxlab1.local",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -397,7 +397,7 @@ class Medium(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.35.56",
+        "10.55.88.64",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -420,7 +420,7 @@ class Large(Profile):
     deployments = [_847a8ef3_deployment]
 
     domain_name = CalmVariable.Simple(
-        "ntnxlab.local",
+        "ntnxlab1.local",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -429,7 +429,7 @@ class Large(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.35.56",
+        "10.55.88.64",
         label="",
         is_mandatory=False,
         is_hidden=False,
