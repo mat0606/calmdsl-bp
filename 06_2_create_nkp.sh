@@ -1,5 +1,10 @@
 echo "Create NKP Cluster"
 calm update cache
+
+sed -i 's/Primary_ITC/Calm_Secondary_OTC/g' nkp/blueprint.py
+sed -i 's/DM3-POC022/DM3-POC088/g' nkp/blueprint.py
+
+
 calm compile bp --file nkp/blueprint.py
 calm create bp --file nkp/blueprint.py --name NKP --force
 calm launch bp "NKP" --app_name "Install NKP" -p "Default" --environment OTC
