@@ -1,9 +1,0 @@
-name: true
-resources:
-  memory_size_mib: true
-  nic_list:
-    '0':
-      ip_endpoint_list: true
-      subnet_reference: true
-      vpc_reference: true
-  num_vcpus_per_socket: true
