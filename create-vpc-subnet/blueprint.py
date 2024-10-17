@@ -219,7 +219,7 @@ class Default(Profile):
     deployments = [ab0869f2_deployment]
 
     PC_IP = CalmVariable.Simple(
-        "10.55.22.40",
+        "10.42.155.39",
         label="",
         is_mandatory=True,
         is_hidden=False,
@@ -273,7 +273,7 @@ class Default(Profile):
     )
 
     dns = CalmVariable.Simple(
-        "10.55.35.56",
+        "10.55.88.64",
         label="Please key in the DNS.  ",
         is_mandatory=True,
         is_hidden=False,
