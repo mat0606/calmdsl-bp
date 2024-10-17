@@ -7,7 +7,10 @@ url_method = "POST"
 
 def get_vpc_uuid(vpc_name):
     vpc_url = "https://"+ip+":9440/api/nutanix/v3/vpcs/list"
-    params={"kind": "vpc"}
+    params = {
+      "kind": "vpc",
+      "length": 250
+    }
     r = urlreq(vpc_url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(params), verify=False, headers=headers)
   #  print "status code: {}".format(r.status_code)
    # print "response: {}".format(r.text)
@@ -18,9 +21,11 @@ def get_vpc_uuid(vpc_name):
     exit(1)
 vpc_uuid=get_vpc_uuid("@@{vpc_name}@@")
 
+#print ("vpc_uuid:" + vpc_uuid)
+
 payload = {
-  "kind": "subnet"
-  
+  "filter": "subnet_type==OVERLAY",
+  "length": 250  
 }
 base_url = "https://" + ip + ":9440/api/nutanix/v3/subnets"
 url = base_url + "/list"

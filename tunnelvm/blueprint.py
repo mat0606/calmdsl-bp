@@ -189,7 +189,7 @@ class Default(Profile):
         is_mandatory=True,
         is_hidden=False,
         description="",
-    )
+    )   
 
     vpc_name = CalmVariable.WithOptions.FromTask(
         CalmTask.Exec.escript.py3(
@@ -244,7 +244,7 @@ class Default(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.55.35.50",
+        "10.42.155.63",
         label="",
         is_mandatory=False,
         is_hidden=True,
