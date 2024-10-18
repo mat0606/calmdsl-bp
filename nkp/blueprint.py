@@ -143,7 +143,7 @@ class nkpbootstrapcalm_timeResources(AhvVmResources):
             "nkp-rocky-9.4-release-1.29.6-20240816215147.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_ITC", cluster="DM3-POC022")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "nkpbootstrapcalm_time_cloud_init_data.yaml")
@@ -156,13 +156,13 @@ class nkpbootstrapcalm_time(AhvVm):
 
     name = "nkp-bootstrap-@@{calm_time}@@"
     resources = nkpbootstrapcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC022")
+    cluster = Ref.Cluster(name="DM3-POC088")
     categories = {"AppType": "Default"}
 
 
 class Rocky_VM(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
+    account = Ref.Account("PP Cluster")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = nkpbootstrapcalm_time
@@ -377,7 +377,7 @@ class Default(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.55.35.50",
+        "10.42.155.63",
         label="",
         is_mandatory=False,
         is_hidden=False,
