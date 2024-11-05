@@ -108,7 +108,7 @@ class Rocky(Service):
                 "scripts",
                 "Service_Rocky_Action_InstallPrerequisites_Task_InstallDocker.sh",
             ),
-            cred=ref(BP_CRED_ROCKY),
+            cred=ref(BP_CRED_ROCKY2Credential),
             target=ref(Rocky),
         )
 
@@ -118,7 +118,7 @@ class Rocky(Service):
                 "scripts",
                 "Service_Rocky_Action_InstallPrerequisites_Task_Installbashcompletion.sh",
             ),
-            cred=ref(BP_CRED_ROCKY),
+            cred=ref(BP_CRED_ROCKY2Credential),
             target=ref(Rocky),
         )
 
@@ -128,7 +128,7 @@ class Rocky(Service):
                 "scripts",
                 "Service_Rocky_Action_InstallPrerequisites_Task_Installk9s.sh",
             ),
-            cred=ref(BP_CRED_ROCKY),
+            cred=ref(BP_CRED_ROCKY2Credential),
             target=ref(Rocky),
         )
 
@@ -140,7 +140,7 @@ class nkpbootstrapcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "nkp-rocky-9.4-release-1.29.6-20240816215147.qcow2", bootable=True
+            "nkp-rocky-9.4-release-1.29.9-20241008013213.qcow2", bootable=True
         )
     ]
     nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
@@ -157,12 +157,15 @@ class nkpbootstrapcalm_time(AhvVm):
     name = "nkp-bootstrap-@@{calm_time}@@"
     resources = nkpbootstrapcalm_timeResources
     cluster = Ref.Cluster(name="DM3-POC088")
-    categories = {"AppType": "Default"}
+    categories = {
+        "AppType": "Default",
+        "Owner": "Matthew"
+    }
 
 
 class Rocky_VM(Substrate):
 
-    account = Ref.Account("PP Cluster")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = nkpbootstrapcalm_time
@@ -176,7 +179,7 @@ class Rocky_VM(Substrate):
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
         delay_secs="60",
-        credential=ref(BP_CRED_ROCKY),
+        credential=ref(BP_CRED_ROCKY2Credential),
     )
 
 
@@ -232,7 +235,7 @@ class Default(Profile):
     ]
 
     nkp_binary = CalmVariable.Simple(
-        "nkp_v2.12.0_linux_amd64.tar.gz",
+        "nkp_v2.12.1_linux_amd64.tar.gz",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -241,7 +244,7 @@ class Default(Profile):
     )
 
     nkp_machine_template_name = CalmVariable.Simple(
-        "nkp-rocky-9.4-release-1.29.6-20240816215147.qcow2",
+        "nkp-rocky-9.4-release-1.29.9-20241008013213.qcow2",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -250,7 +253,7 @@ class Default(Profile):
     )
 
     nkp_binary_download_url = CalmVariable.Simple(
-        "http://10.55.251.38/users/Matthew%20Ong/NKP2.12",
+        "http://10.55.251.38/users/Matthew%20Ong/NKP2.12.1",
         label="Please key in the download path for NKP binary",
         is_mandatory=False,
         is_hidden=True,
@@ -295,7 +298,7 @@ class Default(Profile):
     )
 
     nkp_version = CalmVariable.Simple(
-        "2.12.0",
+        "2.12.1",
         label="Please key in the NKP version",
         is_mandatory=True,
         is_hidden=False,
@@ -377,7 +380,7 @@ class Default(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.42.155.63",
+        "10.55.88.50",
         label="",
         is_mandatory=False,
         is_hidden=False,

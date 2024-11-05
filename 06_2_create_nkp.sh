@@ -1,7 +1,7 @@
 echo "Create NKP Cluster"
 calm update cache
 
-sed -i 's/Primary_ITC/Calm_Secondary_OTC/g' nkp/blueprint.py
+sed -i 's/Calm_Primary_OTC/Calm_Secondary_OTC/g' nkp/blueprint.py
 sed -i 's/DM3-POC022/DM3-POC088/g' nkp/blueprint.py
 sed -i 's/NTNX_LOCAL_AZ_ITC/PP Cluster/g' nkp/blueprint.py
 sed -i 's/10.55.35.50/10.42.155.63/g' nkp/blueprint.py
