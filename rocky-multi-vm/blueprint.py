@@ -154,7 +154,7 @@ class rcalm_time(AhvVm):
 
 class Rocky_VM(Substrate):
 
-    account = Ref.Account("PP Cluster")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -204,7 +204,7 @@ class rcalm_array_indexcalm_time(AhvVm):
 
 class Rocky_VM_2(Substrate):
 
-    account = Ref.Account("PP Cluster")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_array_indexcalm_time
@@ -254,7 +254,7 @@ class rcalm_array_indexcalm_time(AhvVm):
 
 class Rocky_VM_2_3(Substrate):
 
-    account = Ref.Account("PP Cluster")
+    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_array_indexcalm_time
@@ -365,7 +365,7 @@ class Small(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.88.64",
+        "10.55.88.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -397,7 +397,7 @@ class Medium(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.88.64",
+        "10.55.88.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -429,7 +429,7 @@ class Large(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.88.64",
+        "10.55.88.59",
         label="",
         is_mandatory=False,
         is_hidden=False,

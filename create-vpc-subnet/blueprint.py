@@ -273,7 +273,7 @@ class Default(Profile):
     )
 
     dns = CalmVariable.Simple(
-        "10.55.88.64",
+        "10.55.88.59",
         label="Please key in the DNS.  ",
         is_mandatory=True,
         is_hidden=False,
