@@ -27,6 +27,9 @@ payload = {
   },
   "metadata": {
     "kind": "subnet",
+    "categories": {
+      "@@{category}@@": "@@{category_value}@@"
+    }
   }
 }
 

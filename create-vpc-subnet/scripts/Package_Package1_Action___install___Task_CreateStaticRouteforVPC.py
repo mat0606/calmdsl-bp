@@ -39,7 +39,9 @@ payload2 = {
     "kind": "vpc_route_table",
     "uuid": vpc_route_table_uuid,
     "categories_mapping": {},
-    "categories": {}
+    "categories": {
+      "@@{category}@@": "@@{category_value}@@"
+    }
   }
 }
 
