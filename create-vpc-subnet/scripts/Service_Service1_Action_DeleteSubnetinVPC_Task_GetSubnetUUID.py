@@ -17,9 +17,11 @@ subnet_list = []
 subnet_list_json = r.json()
 for subnet in subnet_list_json['entities']:
   if subnet['spec']['name'] == "@@{subnet_name}@@":
-    print (subnet['spec']['name'])
-    print ("subnet_uuid=" + subnet['metadata']['uuid'])
-    exit(0)
+    print ("@@{vpc_uuid}@@")
+    if subnet['spec']['resources']['vpc_reference']['uuid'] == '@@{vpc_uuid}@@':
+      print (subnet['spec']['name'])
+      print ("subnet_uuid=" + subnet['metadata']['uuid'])
+      exit(0)
 print ("No Subnet @@{subnet_name}@@ found")
 exit(1)  
 

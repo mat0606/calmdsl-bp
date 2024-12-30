@@ -3,7 +3,8 @@ password = "@@{PC Credential.secret}@@"
 ip = "@@{PC_IP}@@"
 
 payload = {
-  
+  # Added by Matthew on 30 Dec 2024 with AOS 7.0 and PC2024.3
+  "filter": "name==@@{external_subnet}@@"
 }
 
 base_url = "https://" + ip + ":9440/api/nutanix/v3/subnets"

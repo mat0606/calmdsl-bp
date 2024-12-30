@@ -312,6 +312,34 @@ class Default(Profile):
         description="",
     )
 
+    category_value = CalmVariable.WithOptions.FromTask(
+        CalmTask.Exec.escript.py3(
+            name="",
+            filename=os.path.join(
+                "scripts", "Profile_Default_variable_category_value_Task_SampleTask.py"
+            ),
+        ),
+        label="Please select the category value",
+        is_mandatory=True,
+        is_hidden=False,
+        description="",
+    )
+
+    category = CalmVariable.WithOptions.FromTask(
+        CalmTask.Exec.escript.py3(
+            name="",
+            filename=os.path.join(
+                "scripts", "Profile_Default_variable_category_Task_SampleTask.py"
+            ),
+        ),
+        label="Please select the category",
+        is_mandatory=True,
+        is_hidden=False,
+        description="",
+    )
+
+
+
     @action
     def CreateVPC(name="Create VPC"):
 

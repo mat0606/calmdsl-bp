@@ -33,7 +33,8 @@ payload = {
   "metadata": {
     "kind": "vpc",
     "categories": {
-      "VirtualNetworkType": "Tenant"
+      "VirtualNetworkType": "Tenant",
+      "@@{category}@@": "@@{category_value}@@"
     }
   }
 }
