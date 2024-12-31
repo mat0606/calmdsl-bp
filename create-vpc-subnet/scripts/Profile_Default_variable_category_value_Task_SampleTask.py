@@ -6,6 +6,7 @@ url_method = "POST"
 
 # filter by name because AOS 6.8 with PC2024.1 subnet list api failed without this name filter 
 payload = {
+  "length": 50
 }
 base_url = "https://" + ip + ":9440/api/nutanix/v3/categories/@@{category}@@"
 url = base_url + "/list"
