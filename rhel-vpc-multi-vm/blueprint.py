@@ -40,6 +40,23 @@ BP_CRED_RHEL2Credential = basic_cred(
 )
 
 
+AHV_78 = vm_disk_package(
+    name="AHV_78",
+    description="",
+    config={
+        "name": "AHV_78",
+        "image": {
+            "name": "AHV 78",
+            "type": "DISK_IMAGE",
+            "source": "http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2",
+            "architecture": "X86_64",
+        },
+        "product": {"name": "AHV", "version": "7_8"},
+        "checksum": {},
+    },
+)
+
+
 class RHEL_Svc(Service):
     @action
     def __delete__():
@@ -163,7 +180,6 @@ class rcalm_time(AhvVm):
 
 class RHEL_VM_Small(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -211,7 +227,6 @@ class rcalm_time(AhvVm):
 
 class RHEL_VM_Medium(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -259,7 +274,6 @@ class rcalm_time(AhvVm):
 
 class RHEL_VM_Large(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -277,7 +291,7 @@ class RHEL_VM_Large(Substrate):
     )
 
 
-class UpdateVMSpec_Update_ConfigAttrs2307feae(AhvUpdateConfigAttrs):
+class UpdateVMSpec_Update_ConfigAttrs82ee9a42(AhvUpdateConfigAttrs):
 
     memory = PatchField.Ahv.memory(
         value="2", operation="equal", max_val=4, min_val=2, editable=True
@@ -356,7 +370,7 @@ class Small(Profile):
         AppEdit.UpdateConfig(
             name="Update VM Spec",
             target=ref(b1a5673a_deployment),
-            patch_attrs=UpdateVMSpec_Update_ConfigAttrs2307feae,
+            patch_attrs=UpdateVMSpec_Update_ConfigAttrs82ee9a42,
         )
     ]
 

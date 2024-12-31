@@ -1,3 +1,4 @@
+categories: true
 name: true
 resources:
   memory_size_mib: true
