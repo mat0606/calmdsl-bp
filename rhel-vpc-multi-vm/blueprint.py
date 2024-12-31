@@ -180,6 +180,7 @@ class rcalm_time(AhvVm):
 
 class RHEL_VM_Small(Substrate):
 
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -227,6 +228,7 @@ class rcalm_time(AhvVm):
 
 class RHEL_VM_Medium(Substrate):
 
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
@@ -274,6 +276,7 @@ class rcalm_time(AhvVm):
 
 class RHEL_VM_Large(Substrate):
 
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time
