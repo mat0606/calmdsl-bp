@@ -2,12 +2,12 @@ echo "RHEL Single VM in VPC"
 calm update cache
 
 sed -i 's/administrator@ntnxlab.local/administrator@ntnxlab1.local/g' rhel-vpc-single-vm/blueprint.py
-sed -i 's/SG-AMK/test-subnet/g' rhel-vpc-single-vm/blueprint.py
-sed -i 's/SingaporeVPC/testvpc/g' rhel-vpc-single-vm/blueprint.py
+sed -i 's/test-subnet/SG-AMK/g' rhel-vpc-single-vm/blueprint.py
+sed -i 's/testvpc/SingaporeVPC/g' rhel-vpc-single-vm/blueprint.py
 sed -i 's/PHX-POC071/PHX-POC155/g' rhel-vpc-single-vm/blueprint.py
 sed -i 's/ntnxlab.local/ntnxlab1.local/g' rhel-vpc-single-vm/blueprint.py
-sed -i 's/NTNX_LOCAL_AZ_71/PP Cluster/g' rhel-vpc-single-vm/blueprint.py
-sed -i 's/10.42.70.60/10.55.88.64/g' rhel-vpc-single-vm/blueprint.py
+sed -i 's/PP Cluster/NTNX_LOCAL_AZ_ITC/g' rhel-vpc-single-vm/blueprint.py
+sed -i 's/10.55.88.64/10.55.88.59/g' rhel-vpc-single-vm/blueprint.py
 
 
 calm compile bp --file rhel-vpc-single-vm/blueprint.py

@@ -244,7 +244,7 @@ class Default(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.42.155.63",
+        "10.55.88.50",
         label="",
         is_mandatory=False,
         is_hidden=True,

@@ -1,7 +1,7 @@
 echo "Install Tunnel VM"
 calm update cache
 # Replace CalmVM_IP
-sed -i 's/10.55.35.50/10.42.155.63/g' tunnelvm/blueprint.py
+sed -i 's/10.42.155.63/10.55.88.50/g' tunnelvm/blueprint.py
 
 calm compile bp --file tunnelvm/blueprint.py
 calm create bp --file tunnelvm/blueprint.py --name TunnelVM --force

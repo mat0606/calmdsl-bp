@@ -55,7 +55,7 @@ class vmcalm_timeResources(AhvVmResources):
             "rocky94-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("test-subnet", vpc="testvpc")]
+    nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "vmcalm_time_cloud_init_data.yaml")
@@ -75,7 +75,7 @@ class vmcalm_time(AhvVm):
 
 class VM1(Substrate):
 
-    account = Ref.Account("PP Cluster")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_time
@@ -222,7 +222,7 @@ class Default(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55.88.64",
+        "10.55.88.59",
         label="",
         is_mandatory=False,
         is_hidden=False,

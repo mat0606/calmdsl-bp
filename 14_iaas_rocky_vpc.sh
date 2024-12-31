@@ -1,11 +1,12 @@
 echo "Rocky VM"
 calm update cache
 sed -i 's/administrator@ntnxlab.local/administrator@ntnxlab1.local/g' rocky-single-vm/blueprint.py
-sed -i 's/Primary_OTC/Calm_Secondary_OTC/g' rocky-single-vm/blueprint.py
+sed -i 's/test-subnet/SG-AMK/g' rocky-single-vm/blueprint.py
+sed -i 's/testvpc/SingaporeVPC/g' rocky-single-vm/blueprint.py
 sed -i 's/DM3-POC035/DM3-POC088/g' rocky-single-vm/blueprint.py
-sed -i 's/NTNX_LOCAL_AZ_OTC/PP Cluster/g' rocky-single-vm/blueprint.py
+sed -i 's/PP Cluster/NTNX_LOCAL_AZ_ITC/g' rocky-single-vm/blueprint.py
 sed -i 's/ntnxlab.local/ntnxlab1.local/g' rocky-single-vm/blueprint.py
-sed -i 's/10.55.35.56/10.55.88.64/g' rocky-single-vm/blueprint.py
+sed -i 's/10.55.88.64/10.55.88.59/g' rocky-single-vm/blueprint.py
 
 
 calm compile bp --file rocky-single-vm/blueprint.py
