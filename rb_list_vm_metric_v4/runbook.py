@@ -81,20 +81,20 @@ def List_VM_Metric_v4(credentials=[BP_CRED_CRED_PC, BP_CRED_CRED_CALM]):
         description="",
     )  # noqa
     startTime = CalmVariable.Simple(
-        "2025-01-03T15:30:00.000-08:00",
+        "2025-01-03T15%3A30%3A00.000%2B08%3A00",
         label="Please key in the start time",
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
-        description="3 Jan 2025 15:30 pm on GMT+8",
+        description="3 Jan 2025 15:30 pm on GMT+8.  The value need to be encoded to comply with HTTP requirement for special character.",
     )  # noqa
     endTime = CalmVariable.Simple(
-        "2025-01-03T15:35:00.000-08:00",
+        "2025-01-03T15%3A35%3A00.000%2B08%3A00",
         label="Please key in the end time",
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
-        description="3 Jan 2025 15:35 pm on GMT+8",
+        description="3 Jan 2025 15:35 pm on GMT+8.  The value need to be encoded to comply with HTTP requirement for special character.",
     )  # noqa
     statType = CalmVariable.WithOptions(
         ["AVG", "MIN", "MAX", "LAST", "SUM", "COUNT", "$UNKNOWN"],
