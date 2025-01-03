@@ -36,6 +36,39 @@ def List_PBR_v4(credentials=[BP_CRED_CRED_PC, BP_CRED_CRED_CALM]):
 
     """Use v4 api"""
 
+    CalmVM_IP = CalmVariable.Simple(
+        "10.55.88.50",
+        label="",
+        is_mandatory=False,
+        is_hidden=False,
+        runtime=False,
+        description="",
+    )  # noqa
+    account_name = CalmVariable.WithOptions.FromTask(
+        CalmTask.Exec.escript.py3(
+            name="",
+            filename=os.path.join(
+                "scripts",
+                "_Runbook_List_PBR_v4_variable_account_name_Task_SampleTask.py",
+            ),
+        ),
+        label="Please select the account name",
+        is_mandatory=True,
+        is_hidden=False,
+        description="",
+    )  # noqa
+    PC_IP = CalmVariable.WithOptions.FromTask(
+        CalmTask.Exec.escript.py3(
+            name="",
+            filename=os.path.join(
+                "scripts", "_Runbook_List_PBR_v4_variable_PC_IP_Task_SampleTask.py"
+            ),
+        ),
+        label="Please select the Prism Central IP",
+        is_mandatory=True,
+        is_hidden=False,
+        description="",
+    )  # noqa
     vpc = CalmVariable.WithOptions.FromTask(
         CalmTask.Exec.escript.py3(
             name="",

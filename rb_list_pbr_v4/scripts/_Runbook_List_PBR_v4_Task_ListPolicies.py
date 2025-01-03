@@ -5,7 +5,7 @@ minimum_priority = "@@{minimum_priority}@@"
 
 user = "@@{CRED_PC.username}@@"
 password = "@@{CRED_PC.secret}@@"
-ip = "10.42.155.39"
+ip = "@@{ip_pc}@@"
 
 #print ("@@{vpc}@@")
 payload = {

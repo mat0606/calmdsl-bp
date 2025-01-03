@@ -42,7 +42,7 @@ def ntnx_v3_api_post(login_tuple, payload, req_method="POST", api_extension=None
 # MAIN CODE
 
 # Get Calm details
-ip_calm = '10.55.88.50'
+ip_calm = '@@{CalmVM_IP}@@'
 
 username_calm = '@@{CRED_CALM.username}@@'
 password_calm = '@@{CRED_CALM.secret}@@'
@@ -59,7 +59,7 @@ provider_details = ntnx_v3_api_post(calm_login, 'account')['entities']
 for entity in provider_details:
     if entity['status']['resources']['type'] == 'nutanix_pc' and entity['status']['name'] != 'NTNX_LOCAL_AZ':
       # Added by Matthew for Nutanix enviroment
-      if entity['status']['name'] == 'NTNX_LOCAL_AZ_ITC':
+      if entity['status']['name'] == '@@{account_name}@@':
         ip_pc = entity['status']['resources']['data']['server']
         print ("PC_IP: " + ip_pc)
         
