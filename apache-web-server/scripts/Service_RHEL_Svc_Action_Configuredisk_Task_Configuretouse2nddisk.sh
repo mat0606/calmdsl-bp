@@ -1,0 +1,1 @@
+mkfs -t xfs /dev/sdb
