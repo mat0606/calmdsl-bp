@@ -5,7 +5,7 @@ minimum_priority = "@@{minimum_priority}@@"
 
 user = "@@{CRED_PC.username}@@"
 password = "@@{CRED_PC.secret}@@"
-ip = "10.42.155.39"
+ip = "@@{PC_IP}@@"
 
 #print ("@@{vpc}@@")
 payload = {
@@ -25,8 +25,9 @@ if r.ok:
   vmExtId = vm["extId"]
   print ("vmExtId: " + vmExtId)
   
-url2 = "https:/" + ip + ":9440/api/vmm/v4.0/ahv/stats/vms/" + vmExtId + "?$startTime=@@{startTime}@@&$statType=@@{statType}@@&$endTime=@@{endTime}@@&$samplingInterval=1&$select=@@{queryParam}@@"
-r2 = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
+url2 = "https://" + ip + ":9440/api/vmm/v4.0/ahv/stats/vms/" + vmExtId + "?$startTime=@@{startTime}@@&$statType=@@{statType}@@&$endTime=@@{endTime}@@&$samplingInterval=1&$select=@@{queryParam}@@"
+#print (url2)
+r2 = urlreq(url2, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
 print("REST elapsed total time: " + str(r2.elapsed.total_seconds()))  
 print ("Output: " + r2.text)
 

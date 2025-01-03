@@ -1,6 +1,6 @@
 user = "@@{CRED_PC.username}@@"
 password = "@@{CRED_PC.secret}@@"
-ip = "10.42.155.39"
+ip = "@@{PC_IP}@@"
 
 
 payload = {

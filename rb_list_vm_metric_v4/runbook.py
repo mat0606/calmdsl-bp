@@ -34,6 +34,40 @@ BP_CRED_CRED_CALM = basic_cred(
 @runbook
 def List_VM_Metric_v4(credentials=[BP_CRED_CRED_PC, BP_CRED_CRED_CALM]):
 
+    CalmVM_IP = CalmVariable.Simple(
+        "10.55.88.50",
+        label="",
+        is_mandatory=True,
+        is_hidden=False,
+        runtime=True,
+        description="",
+    )  # noqa
+    account_name = CalmVariable.WithOptions.FromTask(
+        CalmTask.Exec.escript.py3(
+            name="",
+            filename=os.path.join(
+                "scripts",
+                "_Runbook_List_VM_Metric_v4_variable_account_name_Task_SampleTask.py",
+            ),
+        ),
+        label="Please select the account name",
+        is_mandatory=True,
+        is_hidden=False,
+        description="",
+    )  # noqa
+    PC_IP = CalmVariable.WithOptions.FromTask(
+        CalmTask.Exec.escript.py3(
+            name="",
+            filename=os.path.join(
+                "scripts",
+                "_Runbook_List_VM_Metric_v4_variable_PC_IP_Task_SampleTask.py",
+            ),
+        ),
+        label="Please select the Prism Central IP",
+        is_mandatory=True,
+        is_hidden=False,
+        description="",
+    )  # noqa
     vm = CalmVariable.WithOptions.FromTask(
         CalmTask.Exec.escript.py3(
             name="",
@@ -47,20 +81,20 @@ def List_VM_Metric_v4(credentials=[BP_CRED_CRED_PC, BP_CRED_CRED_CALM]):
         description="",
     )  # noqa
     startTime = CalmVariable.Simple(
-        "2024-12-31T14:30:00-08:00",
+        "2025-01-03T15:30:00.000-08:00",
         label="Please key in the start time",
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
-        description="",
+        description="3 Jan 2025 15:30 pm on GMT+8",
     )  # noqa
     endTime = CalmVariable.Simple(
-        "2024-12-31T18:30:00-08:00",
+        "2025-01-03T15:35:00.000-08:00",
         label="Please key in the end time",
         is_mandatory=True,
         is_hidden=False,
         runtime=True,
-        description="",
+        description="3 Jan 2025 15:35 pm on GMT+8",
     )  # noqa
     statType = CalmVariable.WithOptions(
         ["AVG", "MIN", "MAX", "LAST", "SUM", "COUNT", "$UNKNOWN"],
