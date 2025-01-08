@@ -158,10 +158,10 @@ class rcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rhel92-calm-template.qcow2", bootable=True
+            "rhel95-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]
+    nics = [AhvVmNic.NormalNic.ingress("dev-subnet1", vpc="dev-vpcVPC")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -205,10 +205,10 @@ class rcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rhel92-calm-template.qcow2", bootable=True
+            "rhel95-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]
+    nics = [AhvVmNic.NormalNic.ingress("dev-subnet1", vpc="dev-vpcVPC")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -253,10 +253,10 @@ class rcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rhel92-calm-template.qcow2", bootable=True
+            "rhel95-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]
+    nics = [AhvVmNic.NormalNic.ingress("dev-subnet1", vpc="dev-vpcVPC")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
