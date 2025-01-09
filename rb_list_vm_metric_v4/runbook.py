@@ -35,7 +35,7 @@ BP_CRED_CRED_CALM = basic_cred(
 def List_VM_Metric_v4(credentials=[BP_CRED_CRED_PC, BP_CRED_CRED_CALM]):
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.55.88.50",
+        "10.42.155.60",
         label="",
         is_mandatory=True,
         is_hidden=False,

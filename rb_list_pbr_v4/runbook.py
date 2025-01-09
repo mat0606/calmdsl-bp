@@ -37,7 +37,7 @@ def List_PBR_v4(credentials=[BP_CRED_CRED_PC, BP_CRED_CRED_CALM]):
     """Use v4 api"""
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.55.88.50",
+        "10.42.155.60",
         label="",
         is_mandatory=False,
         is_hidden=False,
