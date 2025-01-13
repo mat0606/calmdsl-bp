@@ -140,6 +140,15 @@ class Service1(Service):
     def DeleteSubnetinVPC(name="Delete Subnet in VPC"):
 
         CalmTask.SetVariable.escript.py3(
+            name="Get VPC UUID",
+            filename=os.path.join(
+                "scripts", "Service_Service1_Action_DeleteVPC_Task_GetVPCUUID.py"
+            ),
+            target=ref(Service1),
+            variables=["vpc_uuid"],
+        )
+
+        CalmTask.SetVariable.escript.py3(
             name="Get Subnet UUID",
             filename=os.path.join(
                 "scripts",
@@ -156,6 +165,17 @@ class Service1(Service):
                 "Service_Service1_Action_DeleteSubnetinVPC_Task_DeleteSubnet.py",
             ),
             target=ref(Service1),
+            variables=["task_uuid"],
+        )
+
+        CalmTask.Exec.escript.py3(
+            name="Check Delete Subnet Task",
+            filename=os.path.join(
+                "scripts",
+                "Service_Service1_Action_DeleteSubnetinVPC_Task_CheckDeleteSubnetTask.py",
+            ),
+            target=ref(Service1),
+            variables=["task_uuid"],
         )
 
 

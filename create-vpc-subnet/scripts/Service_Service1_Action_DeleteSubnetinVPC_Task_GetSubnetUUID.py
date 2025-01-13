@@ -3,25 +3,23 @@ password = "@@{PC Credential.secret}@@"
 ip = "@@{PC_IP}@@"
 
 payload = {
-  "filter": "name==@@{subnet_name}@@"
 }
 
-base_url = "https://" + ip + ":9440/api/nutanix/v3/subnets"
-url = base_url + "/list"
+#base_url = "https://" + ip + ":9440/api/nutanix/v3/subnets"
+#url = base_url + "/list"
+url = "https://" + ip + ":9440/api/networking/v4.0/config/subnets?$filter=vpcReference eq '@@{vpc_uuid}@@'"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-url_method = "POST"
+url_method = "GET"
 r = urlreq(url, url_method, auth="BASIC", user=user, passwd=password, params=json.dumps(payload), verify=False, headers=headers)
-#print "Status code: {}".format(r.status_code)
-#print "Output: {}".format(r.text)
+print ("Status code: " + str(r.status_code))
+print ("Output: " + r.text)
 subnet_list = []
 subnet_list_json = r.json()
-for subnet in subnet_list_json['entities']:
-  if subnet['spec']['name'] == "@@{subnet_name}@@":
-    print ("@@{vpc_uuid}@@")
-    if subnet['spec']['resources']['vpc_reference']['uuid'] == '@@{vpc_uuid}@@':
-      print (subnet['spec']['name'])
-      print ("subnet_uuid=" + subnet['metadata']['uuid'])
-      exit(0)
+for subnet in subnet_list_json['data']:
+  if subnet['name'] == "@@{subnet_name}@@":
+    print (subnet['name'])
+    print ("subnet_uuid=" + subnet['extId'])
+    exit(0)
 print ("No Subnet @@{subnet_name}@@ found")
 exit(1)  
 

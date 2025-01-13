@@ -9,6 +9,7 @@ payload = {
 }
 
 url = "https://" + ip + ":9440/api/nutanix/v3/vpcs/list"
+#url = "https://" + ip + ":9440/api/networking/v4.0/config/vpcs?filter=name eq '@@{vpc_name}@@'"
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 url_method = "POST"
 count = 0
