@@ -19,4 +19,6 @@ categories_value_list_json = r.json()
 for category_value in categories_value_list_json['data']:
   #print (category_value['value'])
   categories_value_list.append(category_value['value'])
-print (','.join(categories_value_list))
+#print (','.join(categories_value_list))
+unique_list = list(set(categories_value_list))
+print (','.join(unique_list))
