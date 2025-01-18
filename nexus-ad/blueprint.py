@@ -12,33 +12,33 @@ from calm.dsl.runbooks import CalmEndpoint as Endpoint
 
 # Secret Variables
 
-BP_CRED_CENTOS_KEY = read_local_file("BP_CRED_CENTOS_KEY")
+BP_CRED_ROCKY_KEY = read_local_file("BP_CRED_ROCKY_KEY")
 BP_CRED_DomainAdministrator_PASSWORD = read_local_file(
     "BP_CRED_DomainAdministrator_PASSWORD"
 )
-BP_CRED_Centos2Credential_PASSWORD = read_local_file(
-    "BP_CRED_Centos2Credential_PASSWORD"
+BP_CRED_ROCKY2Credential_PASSWORD = read_local_file(
+    "BP_CRED_ROCKY2Credential_PASSWORD"
 )
 BP_CRED_ROOT2Credential_PASSWORD = read_local_file("BP_CRED_ROOT2Credential_PASSWORD")
 
 # Credentials
-BP_CRED_CENTOS = basic_cred(
-    "centos",
-    BP_CRED_CENTOS_KEY,
-    name="CENTOS",
+BP_CRED_ROCKY = basic_cred(
+    "nutanix",
+    BP_CRED_ROCKY_KEY,
+    name="ROCKY",
     type="KEY",
     default=True,
 )
 BP_CRED_DomainAdministrator = basic_cred(
-    "administrator@ntnxlab.local",
+    "administrator@ntnxlab1.local",
     BP_CRED_DomainAdministrator_PASSWORD,
     name="Domain Administrator",
     type="PASSWORD",
 )
-BP_CRED_Centos2Credential = basic_cred(
-    "centos",
-    BP_CRED_Centos2Credential_PASSWORD,
-    name="Centos 2 Credential",
+BP_CRED_ROCKY2Credential = basic_cred(
+    "nutanix",
+    BP_CRED_ROCKY2Credential_PASSWORD,
+    name="ROCKY 2 Credential",
     type="PASSWORD",
 )
 BP_CRED_ROOT2Credential = basic_cred(
@@ -46,23 +46,6 @@ BP_CRED_ROOT2Credential = basic_cred(
     BP_CRED_ROOT2Credential_PASSWORD,
     name="ROOT 2 Credential",
     type="PASSWORD",
-)
-
-
-AHV_78 = vm_disk_package(
-    name="AHV_78",
-    description="",
-    config={
-        "name": "AHV_78",
-        "image": {
-            "name": "AHV_78",
-            "type": "DISK_IMAGE",
-            "source": "http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2",
-            "architecture": "X86_64",
-        },
-        "product": {"name": "AHV", "version": "7_8"},
-        "checksum": {},
-    },
 )
 
 
@@ -80,7 +63,7 @@ class Nexus(Service):
             filename=os.path.join(
                 "scripts", "Service_Nexus_Action___create___Task_VerifyInstallation.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -89,7 +72,7 @@ class Nexus(Service):
             filename=os.path.join(
                 "scripts", "Service_Nexus_Action___create___Task_Outputpassword.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -108,7 +91,7 @@ class Nexus(Service):
                 "scripts",
                 "Service_Nexus_Action_JoinADDomain_Task_InstalledOSPackages.sh",
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -117,16 +100,18 @@ class Nexus(Service):
             filename=os.path.join(
                 "scripts", "Service_Nexus_Action_JoinADDomain_Task_JoinDNS.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
+
+        Nexus.Prerequisites(name="Validate Prerequisites")
 
         CalmTask.Exec.ssh(
             name="Join AD Domain",
             filename=os.path.join(
                 "scripts", "Service_Nexus_Action_JoinADDomain_Task_JoinADDomain.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -138,7 +123,40 @@ class Nexus(Service):
             filename=os.path.join(
                 "scripts", "Service_Nexus_Action_UnjoinADDomain_Task_UnjoinADDomain.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Nexus),
+        )
+    
+    @action
+    def Prerequisites():
+
+        CalmTask.Exec.ssh(
+            name="Validate DNS Lookup",
+            filename=os.path.join(
+                "scripts",
+                "Service_Nexus_Action_Prerequisites_Task_ValidateDNSLookup.sh",
+            ),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Nexus),
+        )
+
+        CalmTask.Exec.ssh(
+            name="Validate connection to AD",
+            filename=os.path.join(
+                "scripts",
+                "Service_Nexus_Action_Prerequisites_Task_ValidateconnectiontoAD.sh",
+            ),
+            cred=ref(BP_CRED_ROCKY),
+            target=ref(Nexus),
+        )
+
+        CalmTask.Exec.ssh(
+            name="Synchronize time with AD",
+            filename=os.path.join(
+                "scripts",
+                "Service_Nexus_Action_Prerequisites_Task_SynchronizetimewithAD.sh",
+            ),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -215,7 +233,7 @@ class Nexus(Service):
             filename=os.path.join(
                 "scripts", "Service_Nexus_Action_InstallNexus_Task_InstallNexus.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -225,7 +243,7 @@ class Nexus(Service):
                 "scripts",
                 "Service_Nexus_Action_InstallNexus_Task_ConfigureEnvironment.sh",
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -235,7 +253,7 @@ class Nexus(Service):
                 "scripts",
                 "Service_Nexus_Action_InstallNexus_Task_ConfigureNexusVMoption.sh",
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -245,7 +263,7 @@ class Nexus(Service):
                 "scripts",
                 "Service_Nexus_Action_InstallNexus_Task_ConfigureNexusAppHost.sh",
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -255,7 +273,7 @@ class Nexus(Service):
                 "scripts",
                 "Service_Nexus_Action_InstallNexus_Task_GenerateSSLCertificate.sh",
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -265,7 +283,7 @@ class Nexus(Service):
                 "scripts",
                 "Service_Nexus_Action_InstallNexus_Task_ImportCertintoTruststore.sh",
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -274,7 +292,7 @@ class Nexus(Service):
             filename=os.path.join(
                 "scripts", "Service_Nexus_Action_InstallNexus_Task_EnableHTTPS.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -284,7 +302,7 @@ class Nexus(Service):
                 "scripts",
                 "Service_Nexus_Action_InstallNexus_Task_CreateSystemDAccount.sh",
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -293,7 +311,7 @@ class Nexus(Service):
             filename=os.path.join(
                 "scripts", "Service_Nexus_Action_InstallNexus_Task_StartNexusService.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -305,11 +323,11 @@ class ncalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "centos7-calm-20240703.qcow2", bootable=True
+            "rocky94-calm-template.qcow2", bootable=True
         ),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(5000),
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary_70", cluster="PHX-POC070")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Primary_ITC", cluster="PHX-POC155")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "ncalm_time_cloud_init_data.yaml")
@@ -322,12 +340,12 @@ class ncalm_time(AhvVm):
 
     name = "n@@{calm_time}@@"
     resources = ncalm_timeResources
-    cluster = Ref.Cluster(name="PHX-POC070")
+    cluster = Ref.Cluster(name="PHX-POC155")
 
 
 class Nexus_VM(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_70")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = ncalm_time
@@ -341,7 +359,7 @@ class Nexus_VM(Substrate):
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
         delay_secs="60",
-        credential=ref(BP_CRED_CENTOS),
+        credential=ref(BP_CRED_ROCKY),
     )
 
 
@@ -361,7 +379,7 @@ class Package1(Package):
             filename=os.path.join(
                 "scripts", "Package_Package1_Action___install___Task_InstallOpenJDK.sh"
             ),
-            cred=ref(BP_CRED_CENTOS),
+            cred=ref(BP_CRED_ROCKY),
             target=ref(Nexus),
         )
 
@@ -393,7 +411,7 @@ class Default(Profile):
     deployments = [b1a5673a_deployment]
 
     domain_name = CalmVariable.Simple(
-        "ntnxlab.local",
+        "ntnxlab1.local",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -402,7 +420,7 @@ class Default(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.42.70.60",
+        "10.55.88.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -424,13 +442,13 @@ class NexusADhttps20240703(Blueprint):
     """Nexus-OSS: https://@@{Nexus_VM.address}@@:8443/"""
 
     services = [Nexus]
-    packages = [Package1, AHV_78]
+    packages = [Package1]
     substrates = [Nexus_VM]
     profiles = [Default]
     credentials = [
-        BP_CRED_CENTOS,
+        BP_CRED_ROCKY,
         BP_CRED_DomainAdministrator,
-        BP_CRED_Centos2Credential,
+        BP_CRED_ROCKY2Credential,
         BP_CRED_ROOT2Credential,
     ]
 

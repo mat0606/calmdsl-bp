@@ -40,23 +40,6 @@ BP_CRED_RHEL2Credential = basic_cred(
 )
 
 
-AHV_78 = vm_disk_package(
-    name="AHV_78",
-    description="",
-    config={
-        "name": "AHV_78",
-        "image": {
-            "name": "AHV 78",
-            "type": "DISK_IMAGE",
-            "source": "http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2",
-            "architecture": "X86_64",
-        },
-        "product": {"name": "AHV", "version": "7_8"},
-        "checksum": {},
-    },
-)
-
-
 class RHEL_Svc(Service):
     @action
     def __delete__():
@@ -161,7 +144,7 @@ class rcalm_timeResources(AhvVmResources):
             "rhel95-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("dev-subnet1", vpc="dev-vpcVPC")]
+    nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -208,7 +191,7 @@ class rcalm_timeResources(AhvVmResources):
             "rhel95-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("dev-subnet1", vpc="dev-vpcVPC")]
+    nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -256,7 +239,7 @@ class rcalm_timeResources(AhvVmResources):
             "rhel95-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("dev-subnet1", vpc="dev-vpcVPC")]
+    nics = [AhvVmNic.NormalNic.ingress("SG-AMK", vpc="SingaporeVPC")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -387,7 +370,7 @@ class Small(Profile):
     )
 
     Domain_Server_IP = CalmVariable.Simple(
-        "10.55,88.59",
+        "10.55.88.59",
         label="",
         is_mandatory=False,
         is_hidden=False,

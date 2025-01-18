@@ -1,5 +1,4 @@
-
-sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-sudo yum-config-manager --add-repo=http://mirror.centos.org/centos-7/7.9.2009/extras/x86_64
-sudo yum -y update
-sudo yum -y install realmd libnss-sss libpam-sss sssd sssd-tools adcli samba-common samba-common-bin samba-common-tools oddjob oddjob-mkhomedir packagekit firewalld
+sudo dnf -y update
+sudo dnf -y install samba-common-tools realmd oddjob oddjob-mkhomedir sssd adcli krb5-workstation
+# https://docs.rockylinux.org/guides/security/authentication/active_directory_authentication/
+#sudo dnf -y install realmd oddjob oddjob-mkhomedir sssd adcli krb5-workstation
