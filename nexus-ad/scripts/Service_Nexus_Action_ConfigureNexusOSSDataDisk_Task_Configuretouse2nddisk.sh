@@ -1,1 +1,1 @@
-mkfs -t xfs /dev/sdb
+mkfs -t xfs /dev/@@{device_name}@@

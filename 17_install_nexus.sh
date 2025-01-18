@@ -15,4 +15,4 @@ sed -i 's/Centos 2 Credential/ROCKY 2 Credential/g' nexus-ad/blueprint.py
 
 calm compile bp --file nexus-ad/blueprint.py
 calm create bp --file nexus-ad/blueprint.py --name nexus-ad --force
-calm launch bp "nexus-ad" --app_name "Nexus-OSS" --environment ITC
+calm launch bp "nexus-ad" --app_name "Nexus-OSS" --environment ITC_VLAN

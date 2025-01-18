@@ -16,7 +16,8 @@ nexus-edition=nexus-pro-edition
 nexus-features=\
 nexus-pro-feature
 
-nexus.hazelcast.discovery.isEnabled=true' | sudo tee -a nexus-default.properties
+# nexus.hazelcast.discovery.isEnabled=true
+' | sudo tee -a nexus-default.properties
 
 sudo chown nexus:nexus nexus-default.properties 
 

@@ -80,7 +80,7 @@ class Nexus(Service):
     def __delete__():
         """System action for deleting an application. Deletes created VMs as well"""
 
-        Nexus.UnjoinADDomain(name="Action1")
+        Nexus.UnjoinADDomain(name="Unjoin AD Domain")
 
     @action
     def JoinADDomain(name="Join AD Domain"):
@@ -318,12 +318,12 @@ class Nexus(Service):
 
 class ncalm_timeResources(AhvVmResources):
 
-    memory = 16
-    vCPUs = 6
+    memory = 10
+    vCPUs = 4
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rocky94-calm-template.qcow2", bootable=True
+            "rocky95-calm-template.qcow2", bootable=True
         ),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(5000),
     ]
@@ -341,6 +341,7 @@ class ncalm_time(AhvVm):
     name = "n@@{calm_time}@@"
     resources = ncalm_timeResources
     cluster = Ref.Cluster(name="PHX-POC155")
+    categories = {"AppType": "Default", "Owner": "Matthew"}
 
 
 class Nexus_VM(Substrate):
@@ -358,7 +359,7 @@ class Nexus_VM(Substrate):
         retries="5",
         connection_port=22,
         address="@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
-        delay_secs="60",
+        delay_secs="70",
         credential=ref(BP_CRED_ROCKY),
     )
 
@@ -436,7 +437,33 @@ class Default(Profile):
         runtime=True,
         description="",
     )
+    
+    device_name = CalmVariable.Simple(
+        "sdb",
+        label="Device Name for the extended drive",
+        is_mandatory=False,
+        is_hidden=True,
+        runtime=False,
+        description="",
+    )
 
+    jdk_path = CalmVariable.Simple(
+        "/usr/lib/jvm/java-17-openjdk",
+        label="Device Name for the extended drive",
+        is_mandatory=False,
+        is_hidden=True,
+        runtime=False,
+        description="",
+    )
+
+    jre_path = CalmVariable.Simple(
+        "/usr/lib/jvm/jre-17-openjdk",
+        label="Device Name for the extended drive",
+        is_mandatory=False,
+        is_hidden=True,
+        runtime=False,
+        description="",
+    )
 
 class NexusADhttps20240703(Blueprint):
     """Nexus-OSS: https://@@{Nexus_VM.address}@@:8443/"""
