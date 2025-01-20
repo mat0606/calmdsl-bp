@@ -1,0 +1,1 @@
+print ("gitolite_installed='yes'")

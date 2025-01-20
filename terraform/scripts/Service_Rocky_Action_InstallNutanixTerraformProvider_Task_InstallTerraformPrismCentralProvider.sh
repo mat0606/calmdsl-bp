@@ -1,0 +1,1 @@
+git clone https://github.com/mat0606/terraform_blog
