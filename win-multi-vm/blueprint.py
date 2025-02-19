@@ -83,7 +83,7 @@ class Wcalm_timeResources(AhvVmResources):
             "windows-2022-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Primary_ITC", cluster="PHX-POC155")]
 
     guest_customization = AhvVmGC.Sysprep.PreparedScript.withoutDomain(
         filename=os.path.join("specs", "Wcalm_time_sysprep_unattend_xml.xml")
@@ -97,12 +97,12 @@ class Wcalm_time(AhvVm):
 
     name = " W@@{calm_time}@@"
     resources = Wcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC088")
+    cluster = Ref.Cluster(name="PHX-POC155")
 
 
 class WindowsAD(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Windows"
     provider_type = "AHV_VM"
     provider_spec = Wcalm_time
@@ -130,7 +130,7 @@ class Wcalm_timeResources(AhvVmResources):
             "windows-2022-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Primary_ITC", cluster="PHX-POC155")]
 
     guest_customization = AhvVmGC.Sysprep.PreparedScript.withoutDomain(
         filename=os.path.join("specs", "Wcalm_time_sysprep_unattend_xml.xml")
@@ -144,12 +144,12 @@ class Wcalm_time(AhvVm):
 
     name = "W@@{calm_time}@@"
     resources = Wcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC088")
+    cluster = Ref.Cluster(name="PHX-POC155")
 
 
 class WindowsAD_2(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Windows"
     provider_type = "AHV_VM"
     provider_spec = Wcalm_time
@@ -177,7 +177,7 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
             "windows-2022-calm-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Primary_ITC", cluster="PHX-POC155")]
 
     guest_customization = AhvVmGC.Sysprep.PreparedScript.withoutDomain(
         filename=os.path.join(
@@ -193,12 +193,12 @@ class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC088")
+    cluster = Ref.Cluster(name="PHX-POC155")
 
 
 class WindowsAD_2_3(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Windows"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -372,7 +372,7 @@ class Medium(Profile):
         description="",
     )
 
-    DOMAIN = CalmVariable.Simple(
+    DOMAIN_NAME = CalmVariable.Simple(
         "ntnxlab1.local",
         label="",
         is_mandatory=False,
@@ -384,8 +384,27 @@ class Medium(Profile):
 
 class Large(Profile):
 
-    environments = [Ref.Environment(name="OTC")]
+    # environments = [Ref.Environment(name="ITC_VLAN")]
     deployments = [deployment_17d92f43]
+
+    AD = CalmVariable.Simple(
+        "10.55.88.59",
+        label="",
+        is_mandatory=False,
+        is_hidden=False,
+        runtime=True,
+        description="",
+    )
+
+    DOMAIN_NAME = CalmVariable.Simple(
+        "ntnxlab1.local",
+        label="",
+        is_mandatory=False,
+        is_hidden=False,
+        runtime=True,
+        description="",
+    )
+
 
 
 class Tenant1_Windows_AD(Blueprint):

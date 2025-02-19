@@ -141,9 +141,10 @@ class nkpbootstrapcalm_timeResources(AhvVmResources):
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
             "nkp-rocky-9.4-release-1.29.9-20241008013213.qcow2", bootable=True
-        )
+        ),
+        AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(128),
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Primary_ITC", cluster="PHX-POC155")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "nkpbootstrapcalm_time_cloud_init_data.yaml")
@@ -156,7 +157,7 @@ class nkpbootstrapcalm_time(AhvVm):
 
     name = "nkp-bootstrap-@@{calm_time}@@"
     resources = nkpbootstrapcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC088")
+    cluster = Ref.Cluster(name="PHX-POC155")
     categories = {
         "AppType": "Default",
         "Owner": "Matthew"
@@ -165,7 +166,7 @@ class nkpbootstrapcalm_time(AhvVm):
 
 class Rocky_VM(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = nkpbootstrapcalm_time
@@ -235,7 +236,7 @@ class Default(Profile):
     ]
 
     nkp_binary = CalmVariable.Simple(
-        "nkp_v2.12.1_linux_amd64.tar.gz",
+        "nkp_v2.12.2_linux_amd64.tar.gz",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -253,7 +254,7 @@ class Default(Profile):
     )
 
     nkp_binary_download_url = CalmVariable.Simple(
-        "http://10.55.251.38/users/Matthew%20Ong/NKP2.12.1",
+        "http://10.42.194.11/users/Matthew%20Ong/NKP2.12.2",
         label="Please key in the download path for NKP binary",
         is_mandatory=False,
         is_hidden=True,
@@ -271,7 +272,7 @@ class Default(Profile):
     )
 
     control_plane_endpoint = CalmVariable.Simple(
-        "",
+        "10.42.155.116",
         label="Please key in the control plane VIP",
         is_mandatory=True,
         is_hidden=False,
@@ -280,7 +281,7 @@ class Default(Profile):
     )
 
     lb_end_ip = CalmVariable.Simple(
-        "",
+        "10.42.155.115",
         label="Please key in the end IP of the load balancer",
         is_mandatory=True,
         is_hidden=False,
@@ -289,7 +290,7 @@ class Default(Profile):
     )
 
     lb_start_ip = CalmVariable.Simple(
-        "",
+        "10.42.155.115",
         label="Please key in the start IP of the load balancer",
         is_mandatory=True,
         is_hidden=False,
@@ -298,7 +299,7 @@ class Default(Profile):
     )
 
     nkp_version = CalmVariable.Simple(
-        "2.12.1",
+        "2.12.2",
         label="Please key in the NKP version",
         is_mandatory=True,
         is_hidden=False,
@@ -307,7 +308,7 @@ class Default(Profile):
     )
 
     nkp_cluster_name = CalmVariable.Simple(
-        "nkp",
+        "nkp2-12-2-mo-mgmt-cluster",
         label="Please key in the NKP Management Cluster Name",
         is_mandatory=True,
         is_hidden=False,
@@ -380,7 +381,7 @@ class Default(Profile):
     )
 
     CalmVM_IP = CalmVariable.Simple(
-        "10.55.88.50",
+        "10.42.155.60",
         label="",
         is_mandatory=False,
         is_hidden=False,

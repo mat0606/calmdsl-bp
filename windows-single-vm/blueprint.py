@@ -24,7 +24,7 @@ BP_CRED_WIN_VM_CRED = basic_cred(
     default=True,
 )
 BP_CRED_DOMAIN_CRED = basic_cred(
-    "administrator@ntnxlab.local",
+    "administrator@ntnxlab1.local",
     BP_CRED_DOMAIN_CRED_PASSWORD,
     name="DOMAIN_CRED",
     type="PASSWORD",
@@ -60,7 +60,7 @@ class vmcalm_time(AhvVm):
 
     name = "vm-@@{calm_time}@@"
     resources = vmcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC022")
+    cluster = Ref.Cluster(name="PHX-POC155")
 
 
 class VM1(Substrate):
@@ -162,7 +162,7 @@ class Default(Profile):
     ]
 
     AD = CalmVariable.Simple(
-        "10.55.35.56",
+        "10.55.88.59",
         label="",
         is_mandatory=False,
         is_hidden=False,
@@ -171,7 +171,7 @@ class Default(Profile):
     )
 
     DOMAIN_NAME = CalmVariable.Simple(
-        "ntnxlab.local",
+        "ntnxlab1.local",
         label="",
         is_mandatory=False,
         is_hidden=False,
