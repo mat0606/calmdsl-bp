@@ -1,5 +1,5 @@
 #Install Bash Completion if not already installed
-dnf install -y bash-completion
+sudo dnf install -y bash-completion
 
 #Install kubectl
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"

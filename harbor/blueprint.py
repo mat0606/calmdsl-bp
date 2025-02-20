@@ -26,24 +26,28 @@ BP_CRED_ROCKY = basic_cred(
     name="ROCKY",
     type="KEY",
     default=True,
+    editables={"username": True, "secret": True},
 )
 BP_CRED_DomainAdministrator = basic_cred(
     "administrator@ntnxlab1.local",
     BP_CRED_DomainAdministrator_PASSWORD,
     name="Domain Administrator",
     type="PASSWORD",
+    editables={"username": True, "secret": True},
 )
 BP_CRED_ROCKY2Credential = basic_cred(
     "nutanix",
     BP_CRED_ROCKY2Credential_PASSWORD,
     name="ROCKY 2 Credential",
     type="PASSWORD",
+    editables={"username": True, "secret": True},
 )
 BP_CRED_Harbor = basic_cred(
     "admin",
     BP_CRED_Harbor_PASSWORD,
     name="Harbor",
     type="PASSWORD",
+    editables={"username": True, "secret": True},
 )
 
 
@@ -270,11 +274,11 @@ class rcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "rocky94-calm-template.qcow2", bootable=True
+            "rocky95-calm-template.qcow2", bootable=True
         ),
         AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(5000),
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Calm_Secondary_OTC", cluster="DM3-POC088")]
+    nics = [AhvVmNic.NormalNic.ingress("Calm_Primary_ITC", cluster="PHX-POC155")]
 
     guest_customization = AhvVmGC.CloudInit(
         filename=os.path.join("specs", "rcalm_time_cloud_init_data.yaml")
@@ -287,13 +291,16 @@ class rcalm_time(AhvVm):
 
     name = "r@@{calm_time}@@"
     resources = rcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC088")
-    categories = {"AppType": "Default"}
+    cluster = Ref.Cluster(name="PHX-POC155")
+    categories = {
+        "AppType": "Default", 
+        "Owner": "Matthew"                 
+    }
 
 
 class Rocky_VM(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Linux"
     provider_type = "AHV_VM"
     provider_spec = rcalm_time

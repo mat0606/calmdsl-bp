@@ -140,9 +140,9 @@ class nkpbootstrapcalm_timeResources(AhvVmResources):
     cores_per_vCPU = 1
     disks = [
         AhvVmDisk.Disk.Scsi.cloneFromImageService(
-            "nkp-rocky-9.4-release-1.29.9-20241008013213.qcow2", bootable=True
+            "nkp-rocky-9.5-release-1.30.5-20241125163629.qcow2", bootable=True
         ),
-        AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(128),
+       # AhvVmDisk.Disk.Scsi.allocateOnStorageContainer(128),
     ]
     nics = [AhvVmNic.NormalNic.ingress("Calm_Primary_ITC", cluster="PHX-POC155")]
 
@@ -236,7 +236,7 @@ class Default(Profile):
     ]
 
     nkp_binary = CalmVariable.Simple(
-        "nkp_v2.12.2_linux_amd64.tar.gz",
+        "nkp_v2.13.1_linux_amd64.tar.gz",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -245,7 +245,7 @@ class Default(Profile):
     )
 
     nkp_machine_template_name = CalmVariable.Simple(
-        "nkp-rocky-9.4-release-1.29.9-20241008013213.qcow2",
+        "nkp-rocky-9.5-release-1.30.5-20241125163629.qcow2",
         label="",
         is_mandatory=False,
         is_hidden=True,
@@ -254,7 +254,7 @@ class Default(Profile):
     )
 
     nkp_binary_download_url = CalmVariable.Simple(
-        "http://10.42.194.11/users/Matthew%20Ong/NKP2.12.2",
+        "http://10.42.194.11/users/Matthew%20Ong/NKP2.13.1",
         label="Please key in the download path for NKP binary",
         is_mandatory=False,
         is_hidden=True,
@@ -299,7 +299,7 @@ class Default(Profile):
     )
 
     nkp_version = CalmVariable.Simple(
-        "2.12.2",
+        "2.13.1",
         label="Please key in the NKP version",
         is_mandatory=True,
         is_hidden=False,
@@ -308,7 +308,7 @@ class Default(Profile):
     )
 
     nkp_cluster_name = CalmVariable.Simple(
-        "nkp2-12-2-mo-mgmt-cluster",
+        "nkp2-13-1-mo-mgmt-cluster",
         label="Please key in the NKP Management Cluster Name",
         is_mandatory=True,
         is_hidden=False,
