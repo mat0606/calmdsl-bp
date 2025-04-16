@@ -26,7 +26,7 @@ BP_CRED_WIN_VM_CRED = basic_cred(
     editables={"username": True, "secret": True},
 )
 BP_CRED_DOMAIN_CRED = basic_cred(
-    "administrator@ntnxlab1.local",
+    "administrator@ntnxlab2.local",
     BP_CRED_DOMAIN_CRED_PASSWORD,
     name="DOMAIN_CRED",
     type="PASSWORD",
@@ -249,7 +249,7 @@ class vmcalm_array_indexcalm_timeResources(AhvVmResources):
             "windows-2022-calm-ad-template.qcow2", bootable=True
         )
     ]
-    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="DM3-POC088")]
+    nics = [AhvVmNic.NormalNic.ingress("Primary", cluster="PHX-POC155")]
 
     guest_customization = AhvVmGC.Sysprep.PreparedScript.withoutDomain(
         filename=os.path.join(
@@ -265,12 +265,12 @@ class vmcalm_array_indexcalm_time(AhvVm):
 
     name = "vm-@@{calm_array_index}@@-@@{calm_time}@@"
     resources = vmcalm_array_indexcalm_timeResources
-    cluster = Ref.Cluster(name="DM3-POC088")
+    cluster = Ref.Cluster(name="PHX-POC155")
 
 
 class VM1_2(Substrate):
 
-    account = Ref.Account("NTNX_LOCAL_AZ_OTC")
+    account = Ref.Account("NTNX_LOCAL_AZ_ITC")
     os_type = "Windows"
     provider_type = "AHV_VM"
     provider_spec = vmcalm_array_indexcalm_time
@@ -364,7 +364,7 @@ class Profile2(Profile):
     )
 
     DOMAIN_NAME = CalmVariable.Simple(
-        "ntnxlab1.local",
+        "ntnxlab2.local",
         label="",
         is_mandatory=True,
         is_hidden=False,
@@ -373,7 +373,7 @@ class Profile2(Profile):
     )
 
     subnet = CalmVariable.Simple(
-        "10.55.88.0/24",
+        "10.38.142.128/25",
         label="",
         is_mandatory=True,
         is_hidden=False,
